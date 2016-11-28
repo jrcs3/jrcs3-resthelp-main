@@ -1,0 +1,26 @@
+{
+  "name": "jrcs3-resthelp-main",
+  "version": "0.0.1",
+  "description": "\"# jrcs3-resthelp-main\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jrcs3/jrcs3-resthelp-main.git"
+  },
+  "keywords": [
+    "REST",
+    "Express"
+  ],
+  "author": "Jack Stephens",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jrcs3/jrcs3-resthelp-main/issues"
+  },
+  "homepage": "https://github.com/jrcs3/jrcs3-resthelp-main#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
