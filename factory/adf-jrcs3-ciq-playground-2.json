@@ -1,0 +1,9 @@
+{
+	"name": "adf-jrcs3-ciq-playground-2",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "9f0d71a0-bde9-4803-ae93-0ba3c0d258f0",
+		"tenantId": "a00452fd-8469-409e-91a8-bb7a008e2da0"
+	}
+}
