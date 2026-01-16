@@ -1086,6 +1086,9 @@
 						},
 						{
 							"name": "filterWi"
+						},
+						{
+							"name": "filterDate"
 						}
 					],
 					"scriptLines": [
@@ -1114,7 +1117,7 @@
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false) ~> inTransactions",
-						"filterWi, inTransactions join(Email == CustomerEmail,",
+						"filterWi, filterDate join(Email == CustomerEmail,",
 						"     joinType:'inner',",
 						"     matchType:'exact',",
 						"     ignoreSpaces: false,",
@@ -1134,6 +1137,7 @@
 						"joinCustToTrans derive(FullName = FirstName + \" \" + LastName) ~> dFullName",
 						"selTransColumns sort(asc(Date, true)) ~> sortByDate",
 						"inCustomers filter(State == \"WI\") ~> filterWi",
+						"inTransactions filter(toDate(TransactionDate) >= toDate(\"2025-12-31\")) ~> filterDate",
 						"sortByDate sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
