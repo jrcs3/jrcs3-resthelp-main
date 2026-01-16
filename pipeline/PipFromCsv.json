@@ -4,6 +4,7 @@
 		"activities": [
 			{
 				"name": "CpCsvToSql",
+				"description": "Import from CSV to DB.",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
