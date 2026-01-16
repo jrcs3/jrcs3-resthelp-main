@@ -1,0 +1,19 @@
+{
+	"name": "DsXml",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "BlobStorageLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Xml",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "mock_customer_contacts_inland_northwest_50.xml",
+				"container": "xml"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

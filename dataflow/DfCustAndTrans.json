@@ -1,0 +1,113 @@
+{
+	"name": "DfCustAndTrans",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DsCsvUpperMidwestCustomers",
+						"type": "DatasetReference"
+					},
+					"name": "inCustomers"
+				},
+				{
+					"dataset": {
+						"referenceName": "DsCsvUpperMidwestCustomersTrans",
+						"type": "DatasetReference"
+					},
+					"name": "inTransactions"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DsOutTrans",
+						"type": "DatasetReference"
+					},
+					"name": "outTransactionsWithCustomers"
+				}
+			],
+			"transformations": [
+				{
+					"name": "joinCustToTrans"
+				},
+				{
+					"name": "selTransColumns"
+				},
+				{
+					"name": "dFullName"
+				},
+				{
+					"name": "sortByDate"
+				},
+				{
+					"name": "filterWi"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          Email as string,",
+				"          Phone as string,",
+				"          Address as string,",
+				"          City as string,",
+				"          State as string,",
+				"          Zip as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> inCustomers",
+				"source(output(",
+				"          TransactionID as string,",
+				"          CustomerEmail as string,",
+				"          TransactionDate as string,",
+				"          PolicyType as string,",
+				"          PremiumAmount as string,",
+				"          TransactionType as string,",
+				"          Status as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> inTransactions",
+				"filterWi, inTransactions join(Email == CustomerEmail,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> joinCustToTrans",
+				"dFullName select(mapColumn(",
+				"          TransactionID,",
+				"          Date = TransactionDate,",
+				"          Name = FullName,",
+				"          Email,",
+				"          PolicyType,",
+				"          PremiumAmount,",
+				"          TransactionType,",
+				"          Status",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selTransColumns",
+				"joinCustToTrans derive(FullName = FirstName + \" \" + LastName) ~> dFullName",
+				"selTransColumns sort(asc(Date, true)) ~> sortByDate",
+				"inCustomers filter(State == \"WI\") ~> filterWi",
+				"sortByDate sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          Email as string,",
+				"          Phone as string,",
+				"          Address as string,",
+				"          City as string,",
+				"          State as string,",
+				"          Zip as string",
+				"     ),",
+				"     partitionFileNames:[(\"Trans_\" + toString(currentDate()) + \".csv\")],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> outTransactionsWithCustomers"
+			]
+		}
+	}
+}
