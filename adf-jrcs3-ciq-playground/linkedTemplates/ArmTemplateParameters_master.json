@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-jrcs3-ciq-playground"
+		},
+		"AzureSqlDatabase1_password": {
+			"value": ""
+		},
+		"BlobStorageLinkedService_connectionString": {
+			"value": ""
+		},
+		"AzureSqlDatabase1_properties_typeProperties_server": {
+			"value": "sql-jrcs3-ciq-playground.database.windows.net"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_database": {
+			"value": "db-jrcs3-ciq-playground"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_userName": {
+			"value": "dataminister-admin"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
