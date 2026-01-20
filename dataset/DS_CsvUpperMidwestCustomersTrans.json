@@ -1,5 +1,5 @@
 {
-	"name": "DsCsvUpperMidwestCustomersTrans",
+	"name": "DS_CsvUpperMidwestCustomersTrans",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "BlobStorageLinkedService",

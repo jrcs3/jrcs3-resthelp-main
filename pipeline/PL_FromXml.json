@@ -1,5 +1,5 @@
 {
-	"name": "PipFromXml",
+	"name": "PL_FromXml",
 	"properties": {
 		"activities": [
 			{
@@ -116,13 +116,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DsXml",
+						"referenceName": "DS_Xml",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DsSql",
+						"referenceName": "DS_Sql",
 						"type": "DatasetReference"
 					}
 				]

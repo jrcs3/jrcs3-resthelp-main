@@ -1,5 +1,5 @@
 {
-	"name": "DsOutTrans",
+	"name": "DS_OutTrans",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "BlobStorageLinkedService",

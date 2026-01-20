@@ -1,5 +1,5 @@
 {
-	"name": "DsJsonWnba",
+	"name": "DS_JsonWnba",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "BlobStorageLinkedService",

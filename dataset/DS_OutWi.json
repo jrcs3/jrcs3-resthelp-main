@@ -1,5 +1,5 @@
 {
-	"name": "DsOutWi",
+	"name": "DS_OutWi",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "BlobStorageLinkedService",

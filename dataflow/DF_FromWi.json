@@ -1,12 +1,12 @@
 {
-	"name": "DfFromWi",
+	"name": "DF_FromWi",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "DsCsvUpperMidwestCustomers",
+						"referenceName": "DS_CsvUpperMidwestCustomers",
 						"type": "DatasetReference"
 					},
 					"name": "source1"
@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "DsOutWi",
+						"referenceName": "DS_OutWi",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"

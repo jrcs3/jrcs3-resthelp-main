@@ -1,5 +1,5 @@
 {
-	"name": "PipFromCsv",
+	"name": "PL_FromCsv",
 	"properties": {
 		"activities": [
 			{
@@ -142,13 +142,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DsCsvUpperMidwestCustomers",
+						"referenceName": "DS_CsvUpperMidwestCustomers",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DsSql",
+						"referenceName": "DS_Sql",
 						"type": "DatasetReference"
 					}
 				]

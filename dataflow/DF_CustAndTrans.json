@@ -1,19 +1,19 @@
 {
-	"name": "DfCustAndTrans",
+	"name": "DF_CustAndTrans",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "DsCsvUpperMidwestCustomers",
+						"referenceName": "DS_CsvUpperMidwestCustomers",
 						"type": "DatasetReference"
 					},
 					"name": "inCustomers"
 				},
 				{
 					"dataset": {
-						"referenceName": "DsCsvUpperMidwestCustomersTrans",
+						"referenceName": "DS_CsvUpperMidwestCustomersTrans",
 						"type": "DatasetReference"
 					},
 					"name": "inTransactions"
@@ -22,7 +22,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "DsOutTrans",
+						"referenceName": "DS_OutTrans",
 						"type": "DatasetReference"
 					},
 					"name": "outTransactionsWithCustomers"

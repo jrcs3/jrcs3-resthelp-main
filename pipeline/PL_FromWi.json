@@ -1,5 +1,5 @@
 {
-	"name": "PipFromWi",
+	"name": "PL_FromWi",
 	"properties": {
 		"activities": [
 			{
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "DfFromWi",
+						"referenceName": "DF_FromWi",
 						"type": "DataFlowReference"
 					},
 					"compute": {

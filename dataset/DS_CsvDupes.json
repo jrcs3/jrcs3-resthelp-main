@@ -1,5 +1,5 @@
 {
-	"name": "DsCsvDupes",
+	"name": "DS_CsvDupes",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "BlobStorageLinkedService",

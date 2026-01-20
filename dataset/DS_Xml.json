@@ -1,5 +1,5 @@
 {
-	"name": "DsXml",
+	"name": "DS_Xml",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "BlobStorageLinkedService",

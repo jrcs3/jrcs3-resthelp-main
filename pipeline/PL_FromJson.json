@@ -1,5 +1,5 @@
 {
-	"name": "PipFromJson",
+	"name": "PL_FromJson",
 	"properties": {
 		"activities": [
 			{
@@ -112,13 +112,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DsJson",
+						"referenceName": "DS_Json",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DsSql",
+						"referenceName": "DS_Sql",
 						"type": "DatasetReference"
 					}
 				]

@@ -1,5 +1,5 @@
 {
-	"name": "DsJsonTransform",
+	"name": "DS_JsonTransform",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "BlobStorageLinkedService",
