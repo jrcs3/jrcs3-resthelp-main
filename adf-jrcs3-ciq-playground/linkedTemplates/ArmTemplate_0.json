@@ -1319,7 +1319,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/trigger1')]",
+			"name": "[concat(parameters('factoryName'), '/trigger2')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1328,7 +1328,7 @@
 				"pipelines": [
 					{
 						"pipelineReference": {
-							"referenceName": "PL_FromWi",
+							"referenceName": "PL_FromJson",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
@@ -1338,15 +1338,15 @@
 				"typeProperties": {
 					"recurrence": {
 						"frequency": "Minute",
-						"interval": 55,
-						"startTime": "2026-01-21T00:00:00",
-						"endTime": "2026-01-22T20:20:00",
+						"interval": 15,
+						"startTime": "2026-01-21T20:50:00",
+						"endTime": "2026-01-23T21:00:00",
 						"timeZone": "Pacific Standard Time"
 					}
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PL_FromWi')]"
+				"[concat(variables('factoryId'), '/pipelines/PL_FromJson')]"
 			]
 		}
 	]
