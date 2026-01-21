@@ -1,0 +1,111 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_CsvUpperMidwestCustomers",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_OutOther",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_OutOther",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_OutOther",
+						"type": "DatasetReference"
+					},
+					"name": "sink3"
+				}
+			],
+			"transformations": [
+				{
+					"name": "split1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          Email as string,",
+				"          Phone as string,",
+				"          Address as string,",
+				"          City as string,",
+				"          State as string,",
+				"          Zip as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 split(State == \"WI\",",
+				"     State == \"MN\",",
+				"     disjoint: false) ~> split1@(OutWi, OutMn, OutOther)",
+				"split1@OutOther sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          TransactionID as string,",
+				"          Date as string,",
+				"          Name as string,",
+				"          Email as string,",
+				"          PolicyType as string,",
+				"          PremiumAmount as string,",
+				"          TransactionType as string,",
+				"          Status as string",
+				"     ),",
+				"     partitionFileNames:['SplitOther.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1",
+				"split1@OutWi sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          TransactionID as string,",
+				"          Date as string,",
+				"          Name as string,",
+				"          Email as string,",
+				"          PolicyType as string,",
+				"          PremiumAmount as string,",
+				"          TransactionType as string,",
+				"          Status as string",
+				"     ),",
+				"     partitionFileNames:['SplitWi.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink2",
+				"split1@OutMn sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          TransactionID as string,",
+				"          Date as string,",
+				"          Name as string,",
+				"          Email as string,",
+				"          PolicyType as string,",
+				"          PremiumAmount as string,",
+				"          TransactionType as string,",
+				"          Status as string",
+				"     ),",
+				"     partitionFileNames:['SplitMn.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink3"
+			]
+		}
+	}
+}
