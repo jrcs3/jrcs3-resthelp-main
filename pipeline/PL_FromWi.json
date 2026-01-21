@@ -4,6 +4,7 @@
 		"activities": [
 			{
 				"name": "DfFromWi",
+				"description": "Some description that can be published",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
