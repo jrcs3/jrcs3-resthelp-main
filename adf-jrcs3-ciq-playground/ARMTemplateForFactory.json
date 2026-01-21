@@ -33,7 +33,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/PipCustAndTrans')]",
+			"name": "[concat(parameters('factoryName'), '/PL_CustAndTrans')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -52,7 +52,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataflow": {
-								"referenceName": "DfCustAndTrans",
+								"referenceName": "DF_CustAndTrans",
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
@@ -77,11 +77,11 @@
 				"lastPublishTime": "2026-01-13T20:30:29Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/DfCustAndTrans')]"
+				"[concat(variables('factoryId'), '/dataflows/DF_CustAndTrans')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/PipFromCsv')]",
+			"name": "[concat(parameters('factoryName'), '/PL_FromCsv')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -226,14 +226,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "DsCsvUpperMidwestCustomers",
+								"referenceName": "DS_CsvUpperMidwestCustomers",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "DsSql",
+								"referenceName": "DS_Sql",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -247,12 +247,12 @@
 				"lastPublishTime": "2026-01-13T19:30:04Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DsCsvUpperMidwestCustomers')]",
-				"[concat(variables('factoryId'), '/datasets/DsSql')]"
+				"[concat(variables('factoryId'), '/datasets/DS_CsvUpperMidwestCustomers')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Sql')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/PipFromJson')]",
+			"name": "[concat(parameters('factoryName'), '/PL_FromJson')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -367,14 +367,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "DsJson",
+								"referenceName": "DS_Json",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "DsSql",
+								"referenceName": "DS_Sql",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -388,18 +388,19 @@
 				"lastPublishTime": "2026-01-09T23:33:25Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DsJson')]",
-				"[concat(variables('factoryId'), '/datasets/DsSql')]"
+				"[concat(variables('factoryId'), '/datasets/DS_Json')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Sql')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/PipFromWi')]",
+			"name": "[concat(parameters('factoryName'), '/PL_FromWi')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
 						"name": "DfFromWi",
+						"description": "Some description that can be published",
 						"type": "ExecuteDataFlow",
 						"dependsOn": [],
 						"policy": {
@@ -412,7 +413,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataflow": {
-								"referenceName": "DfFromWi",
+								"referenceName": "DF_FromWi",
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
@@ -436,11 +437,11 @@
 				"lastPublishTime": "2026-01-13T18:33:33Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/DfFromWi')]"
+				"[concat(variables('factoryId'), '/dataflows/DF_FromWi')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/PipFromXml')]",
+			"name": "[concat(parameters('factoryName'), '/PL_FromXml')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -559,14 +560,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "DsXml",
+								"referenceName": "DS_Xml",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "DsSql",
+								"referenceName": "DS_Sql",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -580,12 +581,12 @@
 				"lastPublishTime": "2026-01-09T23:33:25Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DsXml')]",
-				"[concat(variables('factoryId'), '/datasets/DsSql')]"
+				"[concat(variables('factoryId'), '/datasets/DS_Xml')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Sql')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DsCsvDupes')]",
+			"name": "[concat(parameters('factoryName'), '/DS_CsvDupes')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -646,7 +647,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DsCsvUpperMidwestCustomers')]",
+			"name": "[concat(parameters('factoryName'), '/DS_CsvUpperMidwestCustomers')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -707,7 +708,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DsCsvUpperMidwestCustomersTrans')]",
+			"name": "[concat(parameters('factoryName'), '/DS_CsvUpperMidwestCustomersTrans')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -764,7 +765,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DsJson')]",
+			"name": "[concat(parameters('factoryName'), '/DS_Json')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -816,7 +817,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DsJsonTransform')]",
+			"name": "[concat(parameters('factoryName'), '/DS_JsonTransform')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -868,7 +869,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DsJsonWnba')]",
+			"name": "[concat(parameters('factoryName'), '/DS_JsonWnba')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -931,7 +932,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DsOutTrans')]",
+			"name": "[concat(parameters('factoryName'), '/DS_OutTrans')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -991,7 +992,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DsOutWi')]",
+			"name": "[concat(parameters('factoryName'), '/DS_OutWi')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1018,7 +1019,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DsSql')]",
+			"name": "[concat(parameters('factoryName'), '/DS_Sql')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1077,7 +1078,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DsXml')]",
+			"name": "[concat(parameters('factoryName'), '/DS_Xml')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1135,7 +1136,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DfCustAndTrans')]",
+			"name": "[concat(parameters('factoryName'), '/DF_CustAndTrans')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1144,14 +1145,14 @@
 					"sources": [
 						{
 							"dataset": {
-								"referenceName": "DsCsvUpperMidwestCustomers",
+								"referenceName": "DS_CsvUpperMidwestCustomers",
 								"type": "DatasetReference"
 							},
 							"name": "inCustomers"
 						},
 						{
 							"dataset": {
-								"referenceName": "DsCsvUpperMidwestCustomersTrans",
+								"referenceName": "DS_CsvUpperMidwestCustomersTrans",
 								"type": "DatasetReference"
 							},
 							"name": "inTransactions"
@@ -1160,7 +1161,7 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "DsOutTrans",
+								"referenceName": "DS_OutTrans",
 								"type": "DatasetReference"
 							},
 							"name": "outTransactionsWithCustomers"
@@ -1253,13 +1254,13 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DsCsvUpperMidwestCustomers')]",
-				"[concat(variables('factoryId'), '/datasets/DsCsvUpperMidwestCustomersTrans')]",
-				"[concat(variables('factoryId'), '/datasets/DsOutTrans')]"
+				"[concat(variables('factoryId'), '/datasets/DS_CsvUpperMidwestCustomers')]",
+				"[concat(variables('factoryId'), '/datasets/DS_CsvUpperMidwestCustomersTrans')]",
+				"[concat(variables('factoryId'), '/datasets/DS_OutTrans')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DfFromWi')]",
+			"name": "[concat(parameters('factoryName'), '/DF_FromWi')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1268,7 +1269,7 @@
 					"sources": [
 						{
 							"dataset": {
-								"referenceName": "DsCsvUpperMidwestCustomers",
+								"referenceName": "DS_CsvUpperMidwestCustomers",
 								"type": "DatasetReference"
 							},
 							"name": "source1"
@@ -1277,7 +1278,7 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "DsOutWi",
+								"referenceName": "DS_OutWi",
 								"type": "DatasetReference"
 							},
 							"name": "sink1"
@@ -1313,8 +1314,39 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DsCsvUpperMidwestCustomers')]",
-				"[concat(variables('factoryId'), '/datasets/DsOutWi')]"
+				"[concat(variables('factoryId'), '/datasets/DS_CsvUpperMidwestCustomers')]",
+				"[concat(variables('factoryId'), '/datasets/DS_OutWi')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/trigger1')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_FromWi",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 55,
+						"startTime": "2026-01-21T00:00:00",
+						"endTime": "2026-01-22T20:20:00",
+						"timeZone": "Pacific Standard Time"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PL_FromWi')]"
 			]
 		}
 	]
