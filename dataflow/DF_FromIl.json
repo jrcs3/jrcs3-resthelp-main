@@ -1,5 +1,5 @@
 {
-	"name": "DF_FromWi",
+	"name": "DF_FromIl",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -23,7 +23,7 @@
 			],
 			"transformations": [
 				{
-					"name": "filterWi"
+					"name": "filterIl"
 				}
 			],
 			"scriptLines": [
@@ -40,8 +40,8 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> source1",
-				"source1 filter(State == \"WI\") ~> filterWi",
-				"filterWi sink(allowSchemaDrift: true,",
+				"source1 filter(State == \"IL\") ~> filterIl",
+				"filterIl sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     partitionFileNames:[(\"WI_\" + toString(currentDate()) + \".csv\")],",
 				"     skipDuplicateMapInputs: true,",

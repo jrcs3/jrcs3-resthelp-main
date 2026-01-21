@@ -1,5 +1,5 @@
 {
-	"name": "PL_FromWi",
+	"name": "PL_FromIl",
 	"properties": {
 		"activities": [
 			{
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "DF_FromWi",
+						"referenceName": "DF_FromIl",
 						"type": "DataFlowReference"
 					},
 					"compute": {
