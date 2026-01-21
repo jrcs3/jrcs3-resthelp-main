@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "DfFromWi",
+				"name": "DfFromIl",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
