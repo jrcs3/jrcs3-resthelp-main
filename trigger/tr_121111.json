@@ -1,0 +1,33 @@
+{
+	"name": "tr_121111",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "PL_FromJson",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2026-01-21T20:11:00",
+				"endTime": "2026-01-22T20:07:00",
+				"timeZone": "Pacific Standard Time",
+				"schedule": {
+					"minutes": [
+						11
+					],
+					"hours": [
+						20
+					]
+				}
+			}
+		}
+	}
+}
