@@ -1136,6 +1136,68 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/trigger1')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_FromWi",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 55,
+						"startTime": "2026-01-21T00:00:00",
+						"endTime": "2026-01-22T20:20:00",
+						"timeZone": "Pacific Standard Time"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PL_FromWi')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/trigger2')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_FromJson",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 15,
+						"startTime": "2026-01-21T20:50:00",
+						"endTime": "2026-01-23T21:00:00",
+						"timeZone": "Pacific Standard Time"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PL_FromJson')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DF_CustAndTrans')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -1319,65 +1381,228 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/trigger1')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
+			"name": "[concat(parameters('factoryName'), '/DF_Splitsville')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "PL_FromWi",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
+				"type": "MappingDataFlow",
 				"typeProperties": {
-					"recurrence": {
-						"frequency": "Minute",
-						"interval": 55,
-						"startTime": "2026-01-21T00:00:00",
-						"endTime": "2026-01-22T20:20:00",
-						"timeZone": "Pacific Standard Time"
-					}
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_CsvUpperMidwestCustomers",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_OutOther",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_OutOther",
+								"type": "DatasetReference"
+							},
+							"name": "sink2"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_OutOther",
+								"type": "DatasetReference"
+							},
+							"name": "sink3"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_OutOther",
+								"type": "DatasetReference"
+							},
+							"name": "sink4"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_OutOther",
+								"type": "DatasetReference"
+							},
+							"name": "sink5"
+						}
+					],
+					"transformations": [
+						{
+							"name": "split1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          FirstName as string,",
+						"          LastName as string,",
+						"          Email as string,",
+						"          Phone as string,",
+						"          Address as string,",
+						"          City as string,",
+						"          State as string,",
+						"          Zip as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 split(State == \"WI\",",
+						"     State == \"MN\",",
+						"     State == \"MI\",",
+						"     State == \"IL\",",
+						"     disjoint: false) ~> split1@(OutWi, OutMn, OutMI, OutIl, OutOther)",
+						"split1@OutOther sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          TransactionID as string,",
+						"          Date as string,",
+						"          Name as string,",
+						"          Email as string,",
+						"          PolicyType as string,",
+						"          PremiumAmount as string,",
+						"          TransactionType as string,",
+						"          Status as string",
+						"     ),",
+						"     partitionFileNames:['SplitOther.csv'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink1",
+						"split1@OutWi sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          TransactionID as string,",
+						"          Date as string,",
+						"          Name as string,",
+						"          Email as string,",
+						"          PolicyType as string,",
+						"          PremiumAmount as string,",
+						"          TransactionType as string,",
+						"          Status as string",
+						"     ),",
+						"     partitionFileNames:['SplitWi.csv'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink2",
+						"split1@OutMn sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          TransactionID as string,",
+						"          Date as string,",
+						"          Name as string,",
+						"          Email as string,",
+						"          PolicyType as string,",
+						"          PremiumAmount as string,",
+						"          TransactionType as string,",
+						"          Status as string",
+						"     ),",
+						"     partitionFileNames:['SplitMn.csv'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink3",
+						"split1@OutMI sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          TransactionID as string,",
+						"          Date as string,",
+						"          Name as string,",
+						"          Email as string,",
+						"          PolicyType as string,",
+						"          PremiumAmount as string,",
+						"          TransactionType as string,",
+						"          Status as string",
+						"     ),",
+						"     partitionFileNames:['SplitMI.csv'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink4",
+						"split1@OutIl sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          TransactionID as string,",
+						"          Date as string,",
+						"          Name as string,",
+						"          Email as string,",
+						"          PolicyType as string,",
+						"          PremiumAmount as string,",
+						"          TransactionType as string,",
+						"          Status as string",
+						"     ),",
+						"     partitionFileNames:['SplitIl.csv'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink5"
+					]
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PL_FromWi')]"
+				"[concat(variables('factoryId'), '/datasets/DS_CsvUpperMidwestCustomers')]",
+				"[concat(variables('factoryId'), '/datasets/DS_OutOther')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/trigger2')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
+			"name": "[concat(parameters('factoryName'), '/DS_OutOther')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BlobStorageLinkedService",
+					"type": "LinkedServiceReference"
+				},
 				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "PL_FromJson",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
+				"type": "DelimitedText",
 				"typeProperties": {
-					"recurrence": {
-						"frequency": "Minute",
-						"interval": 15,
-						"startTime": "2026-01-21T20:50:00",
-						"endTime": "2026-01-23T21:00:00",
-						"timeZone": "Pacific Standard Time"
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "out"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "TransactionID",
+						"type": "String"
+					},
+					{
+						"name": "Date",
+						"type": "String"
+					},
+					{
+						"name": "Name",
+						"type": "String"
+					},
+					{
+						"name": "Email",
+						"type": "String"
+					},
+					{
+						"name": "PolicyType",
+						"type": "String"
+					},
+					{
+						"name": "PremiumAmount",
+						"type": "String"
+					},
+					{
+						"name": "TransactionType",
+						"type": "String"
+					},
+					{
+						"name": "Status",
+						"type": "String"
 					}
-				}
+				]
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PL_FromJson')]"
+				"[concat(variables('factoryId'), '/linkedServices/BlobStorageLinkedService')]"
 			]
 		}
 	]
