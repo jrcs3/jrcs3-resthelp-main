@@ -643,6 +643,146 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_EmployeesSql')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "EmployeeID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "FirstName",
+						"type": "varchar"
+					},
+					{
+						"name": "LastName",
+						"type": "varchar"
+					},
+					{
+						"name": "Email",
+						"type": "varchar"
+					},
+					{
+						"name": "PhoneNumber",
+						"type": "varchar"
+					},
+					{
+						"name": "HireDate",
+						"type": "date"
+					},
+					{
+						"name": "JobTitle",
+						"type": "varchar"
+					},
+					{
+						"name": "Department",
+						"type": "varchar"
+					},
+					{
+						"name": "Salary",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "ManagerID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Status",
+						"type": "varchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "LastModifiedDate",
+						"type": "datetime2",
+						"scale": 7
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Employees"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_EmployeesOut')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BlobStorageLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "out"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "FirstName",
+						"type": "String"
+					},
+					{
+						"name": "LastName",
+						"type": "String"
+					},
+					{
+						"name": "Email",
+						"type": "String"
+					},
+					{
+						"name": "Phone",
+						"type": "String"
+					},
+					{
+						"name": "Address",
+						"type": "String"
+					},
+					{
+						"name": "City",
+						"type": "String"
+					},
+					{
+						"name": "State",
+						"type": "String"
+					},
+					{
+						"name": "Zip",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BlobStorageLinkedService')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_FromCsv')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1280,300 +1420,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DS_CsvUpperMidwestCustomers')]",
 				"[concat(variables('factoryId'), '/datasets/DS_OutWi')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DF_Splitsville')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_CsvUpperMidwestCustomers",
-								"type": "DatasetReference"
-							},
-							"name": "MidwestCustomers"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_OutOther",
-								"type": "DatasetReference"
-							},
-							"name": "SWi"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_OutOther",
-								"type": "DatasetReference"
-							},
-							"name": "SMn"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_OutOther",
-								"type": "DatasetReference"
-							},
-							"name": "SMi"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_OutOther",
-								"type": "DatasetReference"
-							},
-							"name": "SIl"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_OutOther",
-								"type": "DatasetReference"
-							},
-							"name": "SIn"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_OutOther",
-								"type": "DatasetReference"
-							},
-							"name": "SIa"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_OutOther",
-								"type": "DatasetReference"
-							},
-							"name": "SNd"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_OutOther",
-								"type": "DatasetReference"
-							},
-							"name": "SSd"
-						}
-					],
-					"transformations": [
-						{
-							"name": "split1"
-						},
-						{
-							"name": "AgOther"
-						},
-						{
-							"name": "AsOther"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          FirstName as string,",
-						"          LastName as string,",
-						"          Email as string,",
-						"          Phone as string,",
-						"          Address as string,",
-						"          City as string,",
-						"          State as string,",
-						"          Zip as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> MidwestCustomers",
-						"MidwestCustomers split(State == \"WI\",",
-						"     State == \"MN\",",
-						"     State == \"MI\",",
-						"     State == \"IL\",",
-						"     State == \"IN\",",
-						"     State == \"IA\",",
-						"     State == \"ND\",",
-						"     State == \"SD\",",
-						"     disjoint: false) ~> split1@(CWi, CMn, CMi, CIl, CIn, CIa, CNd, CSd, COther)",
-						"split1@COther aggregate(rowCount = count(FirstName)) ~> AgOther",
-						"AgOther assert(expectTrue(rowCount == 0, false, 'HasNoRecordsCheck', null, 'The data stream must be empty')) ~> AsOther",
-						"split1@CWi sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          TransactionID as string,",
-						"          Date as string,",
-						"          Name as string,",
-						"          Email as string,",
-						"          PolicyType as string,",
-						"          PremiumAmount as string,",
-						"          TransactionType as string,",
-						"          Status as string",
-						"     ),",
-						"     partitionFileNames:['SplitWi.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> SWi",
-						"split1@CMn sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          TransactionID as string,",
-						"          Date as string,",
-						"          Name as string,",
-						"          Email as string,",
-						"          PolicyType as string,",
-						"          PremiumAmount as string,",
-						"          TransactionType as string,",
-						"          Status as string",
-						"     ),",
-						"     partitionFileNames:['SplitMn.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> SMn",
-						"split1@CMi sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          TransactionID as string,",
-						"          Date as string,",
-						"          Name as string,",
-						"          Email as string,",
-						"          PolicyType as string,",
-						"          PremiumAmount as string,",
-						"          TransactionType as string,",
-						"          Status as string",
-						"     ),",
-						"     partitionFileNames:['SplitMI.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> SMi",
-						"split1@CIl sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          TransactionID as string,",
-						"          Date as string,",
-						"          Name as string,",
-						"          Email as string,",
-						"          PolicyType as string,",
-						"          PremiumAmount as string,",
-						"          TransactionType as string,",
-						"          Status as string",
-						"     ),",
-						"     partitionFileNames:['SplitIl.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> SIl",
-						"split1@CIn sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          TransactionID as string,",
-						"          Date as string,",
-						"          Name as string,",
-						"          Email as string,",
-						"          PolicyType as string,",
-						"          PremiumAmount as string,",
-						"          TransactionType as string,",
-						"          Status as string",
-						"     ),",
-						"     partitionFileNames:['SplitIn.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> SIn",
-						"split1@CIa sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          TransactionID as string,",
-						"          Date as string,",
-						"          Name as string,",
-						"          Email as string,",
-						"          PolicyType as string,",
-						"          PremiumAmount as string,",
-						"          TransactionType as string,",
-						"          Status as string",
-						"     ),",
-						"     partitionFileNames:['SplitIa.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> SIa",
-						"split1@CNd sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          TransactionID as string,",
-						"          Date as string,",
-						"          Name as string,",
-						"          Email as string,",
-						"          PolicyType as string,",
-						"          PremiumAmount as string,",
-						"          TransactionType as string,",
-						"          Status as string",
-						"     ),",
-						"     partitionFileNames:['SplitNd.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> SNd",
-						"split1@CSd sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          TransactionID as string,",
-						"          Date as string,",
-						"          Name as string,",
-						"          Email as string,",
-						"          PolicyType as string,",
-						"          PremiumAmount as string,",
-						"          TransactionType as string,",
-						"          Status as string",
-						"     ),",
-						"     partitionFileNames:['SplitSd.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> SSd"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_CsvUpperMidwestCustomers')]",
-				"[concat(variables('factoryId'), '/datasets/DS_OutOther')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_CustAndTrans')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "DfCustAndTrans",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "DF_CustAndTrans",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"inCustomers": {},
-									"inTransactions": {},
-									"outTransactionsWithCustomers": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2026-01-13T20:30:29Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/DF_CustAndTrans')]"
 			]
 		}
 	]
