@@ -9,7 +9,7 @@
 						"referenceName": "DS_CsvUpperMidwestCustomers",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "MidwestCustomers"
 				}
 			],
 			"sinks": [
@@ -67,8 +67,8 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source1",
-				"source1 split(State == \"WI\",",
+				"     ignoreNoFilesFound: false) ~> MidwestCustomers",
+				"MidwestCustomers split(State == \"WI\",",
 				"     State == \"MN\",",
 				"     State == \"MI\",",
 				"     State == \"IL\",",
