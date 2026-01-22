@@ -932,6 +932,66 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_OutOther')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BlobStorageLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "out"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "TransactionID",
+						"type": "String"
+					},
+					{
+						"name": "Date",
+						"type": "String"
+					},
+					{
+						"name": "Name",
+						"type": "String"
+					},
+					{
+						"name": "Email",
+						"type": "String"
+					},
+					{
+						"name": "PolicyType",
+						"type": "String"
+					},
+					{
+						"name": "PremiumAmount",
+						"type": "String"
+					},
+					{
+						"name": "TransactionType",
+						"type": "String"
+					},
+					{
+						"name": "Status",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BlobStorageLinkedService')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_OutTrans')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1393,7 +1453,7 @@
 								"referenceName": "DS_CsvUpperMidwestCustomers",
 								"type": "DatasetReference"
 							},
-							"name": "source1"
+							"name": "MidwestCustomers"
 						}
 					],
 					"sinks": [
@@ -1451,8 +1511,8 @@
 						"     ),",
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> source1",
-						"source1 split(State == \"WI\",",
+						"     ignoreNoFilesFound: false) ~> MidwestCustomers",
+						"MidwestCustomers split(State == \"WI\",",
 						"     State == \"MN\",",
 						"     State == \"MI\",",
 						"     State == \"IL\",",
@@ -1543,66 +1603,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DS_CsvUpperMidwestCustomers')]",
 				"[concat(variables('factoryId'), '/datasets/DS_OutOther')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_OutOther')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "BlobStorageLinkedService",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "out"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "TransactionID",
-						"type": "String"
-					},
-					{
-						"name": "Date",
-						"type": "String"
-					},
-					{
-						"name": "Name",
-						"type": "String"
-					},
-					{
-						"name": "Email",
-						"type": "String"
-					},
-					{
-						"name": "PolicyType",
-						"type": "String"
-					},
-					{
-						"name": "PremiumAmount",
-						"type": "String"
-					},
-					{
-						"name": "TransactionType",
-						"type": "String"
-					},
-					{
-						"name": "Status",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BlobStorageLinkedService')]"
 			]
 		}
 	]
