@@ -10,6 +10,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "\"Employees_\" + @formatDateTime(@utcNow(), 'yyyy-MM-dd')",
+					"type": "Expression"
+				},
 				"container": "out"
 			},
 			"columnDelimiter": ",",
