@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
-					"value": "\"Employees_\" + @formatDateTime(@utcNow(), 'yyyy-MM-dd')",
+					"value": "@concat('Employees_', formatDateTime(utcnow(), 'yyyyMMdd'), '.csv')",
 					"type": "Expression"
 				},
 				"container": "out"
