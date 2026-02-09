@@ -17,7 +17,18 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "DF_UpdateEmployees",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"source1": {
+								"_ScrBlobContainer": "changes",
+								"_ScrBlobDirectory": "''",
+								"_ScrBlobFilename": "employee_modifications.csv"
+							},
+							"sink1": {
+								"_SrcTableSchema": "dbo",
+								"_SrcTableName": "Employees"
+							}
+						}
 					},
 					"compute": {
 						"coreCount": 8,
