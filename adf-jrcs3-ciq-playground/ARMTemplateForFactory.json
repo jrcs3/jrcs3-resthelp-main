@@ -2384,14 +2384,27 @@
 								"parameters": {},
 								"datasetParameters": {
 									"source1": {
-										"_ScrBlobContainer": "changes",
-										"_ScrBlobFilename": "employee_modifications.csv"
+										"_ScrBlobContainer": {
+											"value": "@pipeline().parameters._ScrBlobContainer",
+											"type": "Expression"
+										},
+										"_ScrBlobFilename": {
+											"value": "@pipeline().parameters._ScrBlobFilename",
+											"type": "Expression"
+										}
 									},
 									"sink1": {
-										"_SrcTableSchema": "dbo",
-										"_SrcTableName": "Employees"
+										"_SrcTableSchema": {
+											"value": "@pipeline().parameters._SrcTableSchema",
+											"type": "Expression"
+										},
+										"_SrcTableName": {
+											"value": "@pipeline().parameters._SrcTableName",
+											"type": "Expression"
+										}
 									}
-								}
+								},
+								"linkedServiceParameters": {}
 							},
 							"staging": {},
 							"compute": {
