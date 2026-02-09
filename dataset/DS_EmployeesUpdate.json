@@ -19,6 +19,9 @@
 				"defaultValue": "Employees"
 			}
 		},
+		"folder": {
+			"name": "UpdateEmployee"
+		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [

@@ -1,6 +1,9 @@
 {
 	"name": "DF_UpdateEmployees",
 	"properties": {
+		"folder": {
+			"name": "UpdateEmployee"
+		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [

@@ -21,7 +21,6 @@
 						"datasetParameters": {
 							"source1": {
 								"_ScrBlobContainer": "changes",
-								"_ScrBlobDirectory": "''",
 								"_ScrBlobFilename": "employee_modifications.csv"
 							},
 							"sink1": {
@@ -38,6 +37,27 @@
 				}
 			}
 		],
+		"parameters": {
+			"_ScrBlobContainer": {
+				"type": "string",
+				"defaultValue": "changes"
+			},
+			"_ScrBlobFilename": {
+				"type": "string",
+				"defaultValue": "employee_modifications.csv"
+			},
+			"_SrcTableSchema": {
+				"type": "string",
+				"defaultValue": "dbo"
+			},
+			"_SrcTableName": {
+				"type": "string",
+				"defaultValue": "Employees"
+			}
+		},
+		"folder": {
+			"name": "UpdateEmployee"
+		},
 		"annotations": []
 	}
 }

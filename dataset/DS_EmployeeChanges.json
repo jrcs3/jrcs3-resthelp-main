@@ -15,6 +15,9 @@
 				"defaultValue": "employee_modifications.csv"
 			}
 		},
+		"folder": {
+			"name": "UpdateEmployee"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
