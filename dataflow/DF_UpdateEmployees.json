@@ -1,0 +1,75 @@
+{
+	"name": "DF_UpdateEmployees",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_EmployeeChanges",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_EmployeesUpdate",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "alterRow1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Email as string,",
+				"          Operation_Type as string,",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          PhoneNumber as string,",
+				"          HireDate as string,",
+				"          JobTitle as string,",
+				"          Department as string,",
+				"          Salary as string,",
+				"          ManagerID as string,",
+				"          Status as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 alterRow(updateIf(Operation_Type == \"UPDATE\")) ~> alterRow1",
+				"alterRow1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          EmployeeID as integer,",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          Email as string,",
+				"          PhoneNumber as string,",
+				"          HireDate as date,",
+				"          JobTitle as string,",
+				"          Department as string,",
+				"          Salary as decimal(10,2),",
+				"          ManagerID as integer,",
+				"          Status as string,",
+				"          CreatedDate as timestamp,",
+				"          LastModifiedDate as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+			]
+		}
+	}
+}
