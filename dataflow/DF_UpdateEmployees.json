@@ -24,6 +24,9 @@
 			"transformations": [
 				{
 					"name": "alterRow1"
+				},
+				{
+					"name": "derivedColumn1"
 				}
 			],
 			"scriptLines": [
@@ -44,7 +47,8 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> source1",
 				"source1 alterRow(updateIf(Operation_Type == \"UPDATE\")) ~> alterRow1",
-				"alterRow1 sink(allowSchemaDrift: true,",
+				"alterRow1 derive(LastModifiedDate = currentTimestamp()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          EmployeeID as integer,",
@@ -68,7 +72,17 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          FirstName,",
+				"          LastName,",
+				"          Email,",
+				"          PhoneNumber,",
+				"          JobTitle,",
+				"          Department,",
+				"          Status,",
+				"          LastModifiedDate",
+				"     )) ~> sink1"
 			]
 		}
 	}
