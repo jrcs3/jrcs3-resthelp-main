@@ -810,14 +810,13 @@
 						"type": "string",
 						"defaultValue": "changes"
 					},
-					"_ScrBlobDirectory": {
-						"type": "string",
-						"defaultValue": "''"
-					},
 					"_ScrBlobFilename": {
 						"type": "string",
 						"defaultValue": "employee_modifications.csv"
 					}
+				},
+				"folder": {
+					"name": "UpdateEmployee"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -826,10 +825,6 @@
 						"type": "AzureBlobStorageLocation",
 						"fileName": {
 							"value": "@dataset()._ScrBlobFilename",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset()._ScrBlobDirectory",
 							"type": "Expression"
 						},
 						"container": {
@@ -915,6 +910,9 @@
 						"type": "string",
 						"defaultValue": "Employees"
 					}
+				},
+				"folder": {
+					"name": "UpdateEmployee"
 				},
 				"annotations": [],
 				"type": "AzureSqlTable",

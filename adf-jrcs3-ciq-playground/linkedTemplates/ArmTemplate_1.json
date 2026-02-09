@@ -578,6 +578,9 @@
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
 			"properties": {
+				"folder": {
+					"name": "UpdateEmployee"
+				},
 				"type": "MappingDataFlow",
 				"typeProperties": {
 					"sources": [
@@ -841,8 +844,14 @@
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
-									"source1": {},
-									"sink1": {}
+									"source1": {
+										"_ScrBlobContainer": "changes",
+										"_ScrBlobFilename": "employee_modifications.csv"
+									},
+									"sink1": {
+										"_SrcTableSchema": "dbo",
+										"_SrcTableName": "Employees"
+									}
 								}
 							},
 							"staging": {},
@@ -856,6 +865,27 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"_ScrBlobContainer": {
+						"type": "string",
+						"defaultValue": "changes"
+					},
+					"_ScrBlobFilename": {
+						"type": "string",
+						"defaultValue": "employee_modifications.csv"
+					},
+					"_SrcTableSchema": {
+						"type": "string",
+						"defaultValue": "dbo"
+					},
+					"_SrcTableName": {
+						"type": "string",
+						"defaultValue": "Employees"
+					}
+				},
+				"folder": {
+					"name": "UpdateEmployee"
 				},
 				"annotations": []
 			},
