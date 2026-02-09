@@ -10,10 +10,6 @@
 				"type": "string",
 				"defaultValue": "changes"
 			},
-			"_ScrBlobDirectory": {
-				"type": "string",
-				"defaultValue": "null()"
-			},
 			"_ScrBlobFilename": {
 				"type": "string",
 				"defaultValue": "employee_modifications.csv"
@@ -26,10 +22,6 @@
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
 					"value": "@dataset()._ScrBlobFilename",
-					"type": "Expression"
-				},
-				"folderPath": {
-					"value": "@dataset()._ScrBlobDirectory",
 					"type": "Expression"
 				},
 				"container": {
