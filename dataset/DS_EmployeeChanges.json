@@ -11,7 +11,8 @@
 				"defaultValue": "changes"
 			},
 			"_ScrBlobDirectory": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "''"
 			},
 			"_ScrBlobFilename": {
 				"type": "string",
