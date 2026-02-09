@@ -17,11 +17,11 @@
 		},
 		"AzureSqlDatabase1_properties_typeProperties_server": {
 			"type": "string",
-			"defaultValue": "sql-jrcs3-ciq-playground.database.windows.net"
+			"defaultValue": "@{linkedService().Domain}"
 		},
 		"AzureSqlDatabase1_properties_typeProperties_database": {
 			"type": "string",
-			"defaultValue": "db-jrcs3-ciq-playground"
+			"defaultValue": "@{linkedService().Database}"
 		},
 		"AzureSqlDatabase1_properties_typeProperties_userName": {
 			"type": "string",
@@ -1594,6 +1594,16 @@
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
+				"parameters": {
+					"Domain": {
+						"type": "string",
+						"defaultValue": "sql-jrcs3-ciq-playground.database.windows.net"
+					},
+					"Database": {
+						"type": "string",
+						"defaultValue": "db-jrcs3-ciq-playground"
+					}
+				},
 				"annotations": [],
 				"type": "AzureSqlDatabase",
 				"typeProperties": {
@@ -2051,6 +2061,286 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DS_CsvUpperMidwestCustomers')]",
 				"[concat(variables('factoryId'), '/datasets/DS_OutOther')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_EmployeeChanges')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BlobStorageLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "employee_modifications.csv",
+						"container": "changes"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Email",
+						"type": "String"
+					},
+					{
+						"name": "Operation_Type",
+						"type": "String"
+					},
+					{
+						"name": "FirstName",
+						"type": "String"
+					},
+					{
+						"name": "LastName",
+						"type": "String"
+					},
+					{
+						"name": "PhoneNumber",
+						"type": "String"
+					},
+					{
+						"name": "HireDate",
+						"type": "String"
+					},
+					{
+						"name": "JobTitle",
+						"type": "String"
+					},
+					{
+						"name": "Department",
+						"type": "String"
+					},
+					{
+						"name": "Salary",
+						"type": "String"
+					},
+					{
+						"name": "ManagerID",
+						"type": "String"
+					},
+					{
+						"name": "Status",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BlobStorageLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_UpdateEmployees')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_EmployeeChanges",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_EmployeesUpdate",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "alterRow1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Email as string,",
+						"          Operation_Type as string,",
+						"          FirstName as string,",
+						"          LastName as string,",
+						"          PhoneNumber as string,",
+						"          HireDate as string,",
+						"          JobTitle as string,",
+						"          Department as string,",
+						"          Salary as string,",
+						"          ManagerID as string,",
+						"          Status as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 alterRow(updateIf(Operation_Type == \"UPDATE\")) ~> alterRow1",
+						"alterRow1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          EmployeeID as integer,",
+						"          FirstName as string,",
+						"          LastName as string,",
+						"          Email as string,",
+						"          PhoneNumber as string,",
+						"          HireDate as date,",
+						"          JobTitle as string,",
+						"          Department as string,",
+						"          Salary as decimal(10,2),",
+						"          ManagerID as integer,",
+						"          Status as string,",
+						"          CreatedDate as timestamp,",
+						"          LastModifiedDate as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_EmployeeChanges')]",
+				"[concat(variables('factoryId'), '/datasets/DS_EmployeesUpdate')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_EmployeesUpdate')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "EmployeeID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "FirstName",
+						"type": "varchar"
+					},
+					{
+						"name": "LastName",
+						"type": "varchar"
+					},
+					{
+						"name": "Email",
+						"type": "varchar"
+					},
+					{
+						"name": "PhoneNumber",
+						"type": "varchar"
+					},
+					{
+						"name": "HireDate",
+						"type": "date"
+					},
+					{
+						"name": "JobTitle",
+						"type": "varchar"
+					},
+					{
+						"name": "Department",
+						"type": "varchar"
+					},
+					{
+						"name": "Salary",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "ManagerID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Status",
+						"type": "varchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "LastModifiedDate",
+						"type": "datetime2",
+						"scale": 7
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Employees"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_UpdateEmployees')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DF_UpdateEmployees",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/DF_UpdateEmployees')]"
 			]
 		}
 	]

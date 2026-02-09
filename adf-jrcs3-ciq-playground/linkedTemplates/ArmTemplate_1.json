@@ -13,6 +13,268 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/PL_FromXml')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CpXmlToSql",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "XmlSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "XmlReadSettings",
+									"validationMode": "none",
+									"namespaces": true
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "[['FirstName']"
+										},
+										"sink": {
+											"name": "FirstName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['LastName']"
+										},
+										"sink": {
+											"name": "LastName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['Email']"
+										},
+										"sink": {
+											"name": "Email",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['Phone']"
+										},
+										"sink": {
+											"name": "Phone",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['Address']"
+										},
+										"sink": {
+											"name": "Address",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['City']"
+										},
+										"sink": {
+											"name": "City",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['State']"
+										},
+										"sink": {
+											"name": "State",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['Zip']"
+										},
+										"sink": {
+											"name": "Zip",
+											"type": "String"
+										}
+									}
+								],
+								"collectionReference": "$['Customers']['Customer']",
+								"mapComplexValuesToString": true
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_Xml",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_Sql",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2026-01-09T23:33:25Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_CustAndTrans')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_CsvUpperMidwestCustomers",
+								"type": "DatasetReference"
+							},
+							"name": "inCustomers"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_CsvUpperMidwestCustomersTrans",
+								"type": "DatasetReference"
+							},
+							"name": "inTransactions"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_OutTrans",
+								"type": "DatasetReference"
+							},
+							"name": "outTransactionsWithCustomers"
+						}
+					],
+					"transformations": [
+						{
+							"name": "joinCustToTrans"
+						},
+						{
+							"name": "selTransColumns"
+						},
+						{
+							"name": "dFullName"
+						},
+						{
+							"name": "sortByDate"
+						},
+						{
+							"name": "filterWi"
+						},
+						{
+							"name": "filterDate"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          FirstName as string,",
+						"          LastName as string,",
+						"          Email as string,",
+						"          Phone as string,",
+						"          Address as string,",
+						"          City as string,",
+						"          State as string,",
+						"          Zip as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> inCustomers",
+						"source(output(",
+						"          TransactionID as string,",
+						"          CustomerEmail as string,",
+						"          TransactionDate as string,",
+						"          PolicyType as string,",
+						"          PremiumAmount as string,",
+						"          TransactionType as string,",
+						"          Status as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> inTransactions",
+						"filterWi, filterDate join(Email == CustomerEmail,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> joinCustToTrans",
+						"dFullName select(mapColumn(",
+						"          TransactionID,",
+						"          Date = TransactionDate,",
+						"          Name = FullName,",
+						"          Email,",
+						"          PolicyType,",
+						"          PremiumAmount,",
+						"          TransactionType,",
+						"          Status",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> selTransColumns",
+						"joinCustToTrans derive(FullName = FirstName + \" \" + LastName) ~> dFullName",
+						"selTransColumns sort(asc(Date, true)) ~> sortByDate",
+						"inCustomers filter(State == \"WI\") ~> filterWi",
+						"inTransactions filter(toDate(TransactionDate) >= toDate(\"2025-12-31\")) ~> filterDate",
+						"sortByDate sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          FirstName as string,",
+						"          LastName as string,",
+						"          Email as string,",
+						"          Phone as string,",
+						"          Address as string,",
+						"          City as string,",
+						"          State as string,",
+						"          Zip as string",
+						"     ),",
+						"     partitionFileNames:[(\"Trans_\" + toString(currentDate()) + \".csv\")],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> outTransactionsWithCustomers"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DF_FromWi')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -312,6 +574,84 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DF_UpdateEmployees')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_EmployeeChanges",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_EmployeesUpdate",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "alterRow1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Email as string,",
+						"          Operation_Type as string,",
+						"          FirstName as string,",
+						"          LastName as string,",
+						"          PhoneNumber as string,",
+						"          HireDate as string,",
+						"          JobTitle as string,",
+						"          Department as string,",
+						"          Salary as string,",
+						"          ManagerID as string,",
+						"          Status as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 alterRow(updateIf(Operation_Type == \"UPDATE\")) ~> alterRow1",
+						"alterRow1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          EmployeeID as integer,",
+						"          FirstName as string,",
+						"          LastName as string,",
+						"          Email as string,",
+						"          PhoneNumber as string,",
+						"          HireDate as date,",
+						"          JobTitle as string,",
+						"          Department as string,",
+						"          Salary as decimal(10,2),",
+						"          ManagerID as integer,",
+						"          Status as string,",
+						"          CreatedDate as timestamp,",
+						"          LastModifiedDate as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_CustAndTrans')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -355,7 +695,9 @@
 				"annotations": [],
 				"lastPublishTime": "2026-01-13T20:30:29Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/DF_CustAndTrans')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/PL_FromWi')]",
@@ -456,6 +798,52 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/DF_Splitsville')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_UpdateEmployees')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DF_UpdateEmployees",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/DF_UpdateEmployees')]"
 			]
 		}
 	]

@@ -12,10 +12,10 @@
 			"value": ""
 		},
 		"AzureSqlDatabase1_properties_typeProperties_server": {
-			"value": "sql-jrcs3-ciq-playground.database.windows.net"
+			"value": "@{linkedService().Domain}"
 		},
 		"AzureSqlDatabase1_properties_typeProperties_database": {
-			"value": "db-jrcs3-ciq-playground"
+			"value": "@{linkedService().Database}"
 		},
 		"AzureSqlDatabase1_properties_typeProperties_userName": {
 			"value": "dataminister-admin"

@@ -17,11 +17,11 @@
 		},
 		"AzureSqlDatabase1_properties_typeProperties_server": {
 			"type": "string",
-			"defaultValue": "sql-jrcs3-ciq-playground.database.windows.net"
+			"defaultValue": "@{linkedService().Domain}"
 		},
 		"AzureSqlDatabase1_properties_typeProperties_database": {
 			"type": "string",
-			"defaultValue": "db-jrcs3-ciq-playground"
+			"defaultValue": "@{linkedService().Database}"
 		},
 		"AzureSqlDatabase1_properties_typeProperties_userName": {
 			"type": "string",
