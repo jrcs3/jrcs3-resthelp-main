@@ -805,13 +805,37 @@
 					"referenceName": "BlobStorageLinkedService",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"_ScrBlobContainer": {
+						"type": "string",
+						"defaultValue": "changes"
+					},
+					"_ScrBlobDirectory": {
+						"type": "string",
+						"defaultValue": "''"
+					},
+					"_ScrBlobFilename": {
+						"type": "string",
+						"defaultValue": "employee_modifications.csv"
+					}
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "employee_modifications.csv",
-						"container": "changes"
+						"fileName": {
+							"value": "@dataset()._ScrBlobFilename",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset()._ScrBlobDirectory",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset()._ScrBlobContainer",
+							"type": "Expression"
+						}
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
@@ -876,7 +900,21 @@
 			"properties": {
 				"linkedServiceName": {
 					"referenceName": "AzureSqlDatabase1",
-					"type": "LinkedServiceReference"
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"Domain": "sql-jrcs3-ciq-playground.database.windows.net",
+						"Database": "db-jrcs3-ciq-playground"
+					}
+				},
+				"parameters": {
+					"_SrcTableSchema": {
+						"type": "string",
+						"defaultValue": "dbo"
+					},
+					"_SrcTableName": {
+						"type": "string",
+						"defaultValue": "Employees"
+					}
 				},
 				"annotations": [],
 				"type": "AzureSqlTable",
@@ -941,8 +979,14 @@
 					}
 				],
 				"typeProperties": {
-					"schema": "dbo",
-					"table": "Employees"
+					"schema": {
+						"value": "@dataset()._SrcTableSchema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset()._SrcTableName",
+						"type": "Expression"
+					}
 				}
 			},
 			"dependsOn": [
