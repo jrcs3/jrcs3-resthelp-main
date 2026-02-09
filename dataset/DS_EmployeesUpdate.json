@@ -3,7 +3,21 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase1",
-			"type": "LinkedServiceReference"
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"Domain": "sql-jrcs3-ciq-playground.database.windows.net",
+				"Database": "db-jrcs3-ciq-playground"
+			}
+		},
+		"parameters": {
+			"_SrcTableSchema": {
+				"type": "string",
+				"defaultValue": "dbo"
+			},
+			"_SrcTableName": {
+				"type": "string",
+				"defaultValue": "Employees"
+			}
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
@@ -68,8 +82,14 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "dbo",
-			"table": "Employees"
+			"schema": {
+				"value": "@dataset()._SrcTableSchema",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset()._SrcTableName",
+				"type": "Expression"
+			}
 		}
 	}
 }

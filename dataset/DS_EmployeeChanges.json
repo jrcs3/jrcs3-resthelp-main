@@ -5,6 +5,19 @@
 			"referenceName": "BlobStorageLinkedService",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"_ScrBlobContainer": {
+				"type": "string",
+				"defaultValue": "changes"
+			},
+			"_ScrBlobDirectory": {
+				"type": "string"
+			},
+			"_ScrBlobFilename": {
+				"type": "string",
+				"defaultValue": "employee_modifications.csv"
+			}
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
