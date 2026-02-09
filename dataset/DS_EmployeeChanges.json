@@ -12,7 +12,7 @@
 			},
 			"_ScrBlobDirectory": {
 				"type": "string",
-				"defaultValue": "''"
+				"defaultValue": "null()"
 			},
 			"_ScrBlobFilename": {
 				"type": "string",
