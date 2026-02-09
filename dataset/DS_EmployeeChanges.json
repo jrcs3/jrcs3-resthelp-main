@@ -23,8 +23,18 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "employee_modifications.csv",
-				"container": "changes"
+				"fileName": {
+					"value": "@dataset()._ScrBlobFilename",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset()._ScrBlobDirectory",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset()._ScrBlobContainer",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
