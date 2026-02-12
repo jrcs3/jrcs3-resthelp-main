@@ -11,6 +11,9 @@
 		"BlobStorageLinkedService_connectionString": {
 			"value": ""
 		},
+		"AzureBlobStorage1_properties_typeProperties_serviceEndpoint": {
+			"value": "https://jrcs3trustagestorage.blob.core.windows.net/"
+		},
 		"AzureSqlDatabase1_properties_typeProperties_server": {
 			"value": "@{linkedService().Domain}"
 		},
