@@ -99,6 +99,26 @@
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'adf-jrcs3-ciq-playground_ArmTemplate_0')]"
 			]
+		},
+		{
+			"name": "adf-jrcs3-ciq-playground_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf-jrcs3-ciq-playground_ArmTemplate_1')]"
+			]
 		}
 	]
 }
