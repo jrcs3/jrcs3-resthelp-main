@@ -1,0 +1,27 @@
+{
+	"name": "PL_Test_Copy",
+	"properties": {
+		"parameters": {
+			"_ScrBlobContainer": {
+				"type": "string",
+				"defaultValue": "changes"
+			},
+			"_ScrBlobFilename": {
+				"type": "string",
+				"defaultValue": "employee_modifications.csv"
+			},
+			"_SrcTableSchema": {
+				"type": "string",
+				"defaultValue": "dbo"
+			},
+			"_SrcTableName": {
+				"type": "string",
+				"defaultValue": "Employees"
+			}
+		},
+		"folder": {
+			"name": "UpdateEmployee"
+		},
+		"annotations": []
+	}
+}
