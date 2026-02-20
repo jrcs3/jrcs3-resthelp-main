@@ -36,8 +36,14 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "mock_customer_contacts_upper_midwest_50.csv",
-						"container": "customers"
+						"fileName": {
+							"value": "@dataset()._ScrBlobFilename",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset()._ScrBlobContainer",
+							"type": "Expression"
+						}
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
