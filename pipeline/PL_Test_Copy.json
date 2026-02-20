@@ -142,13 +142,33 @@
 				"inputs": [
 					{
 						"referenceName": "DS_MidwestCustomers",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"_ScrBlobContainer": {
+								"value": "@pipeline().parameters._ScrBlobContainer",
+								"type": "Expression"
+							},
+							"_ScrBlobFilename": {
+								"value": "@pipeline().parameters._ScrBlobFilename",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
 					{
 						"referenceName": "DS_CustomerInDb",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"_SrcTableSchema": {
+								"value": "@pipeline().parameters._SrcTableSchema",
+								"type": "Expression"
+							},
+							"_SrcTableName": {
+								"value": "@pipeline().parameters._SrcTableName",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			}
