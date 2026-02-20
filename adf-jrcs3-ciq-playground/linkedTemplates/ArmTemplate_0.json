@@ -429,6 +429,81 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_CustomerInDb')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"Domain": "sql-jrcs3-ciq-playground.database.windows.net",
+						"Database": "db-jrcs3-ciq-playground"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "CustomerID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "FirstName",
+						"type": "varchar"
+					},
+					{
+						"name": "LastName",
+						"type": "varchar"
+					},
+					{
+						"name": "Email",
+						"type": "varchar"
+					},
+					{
+						"name": "Phone",
+						"type": "varchar"
+					},
+					{
+						"name": "Address",
+						"type": "varchar"
+					},
+					{
+						"name": "City",
+						"type": "varchar"
+					},
+					{
+						"name": "State",
+						"type": "varchar"
+					},
+					{
+						"name": "Zip",
+						"type": "varchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "LastModifiedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Customer"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_DemoUpperMidwest')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1063,66 +1138,6 @@
 						}
 					}
 				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BlobStorageLinkedService')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_OutOther')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "BlobStorageLinkedService",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "out"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "TransactionID",
-						"type": "String"
-					},
-					{
-						"name": "Date",
-						"type": "String"
-					},
-					{
-						"name": "Name",
-						"type": "String"
-					},
-					{
-						"name": "Email",
-						"type": "String"
-					},
-					{
-						"name": "PolicyType",
-						"type": "String"
-					},
-					{
-						"name": "PremiumAmount",
-						"type": "String"
-					},
-					{
-						"name": "TransactionType",
-						"type": "String"
-					},
-					{
-						"name": "Status",
-						"type": "String"
-					}
-				]
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/BlobStorageLinkedService')]"

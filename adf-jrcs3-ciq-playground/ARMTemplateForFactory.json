@@ -997,86 +997,60 @@
 									},
 									{
 										"source": {
-											"name": "PhoneNumber",
+											"name": "Phone",
 											"type": "String",
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "PhoneNumber",
+											"name": "Phone",
 											"type": "String",
 											"physicalType": "varchar"
 										}
 									},
 									{
 										"source": {
-											"name": "HireDate",
+											"name": "Address",
 											"type": "String",
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "HireDate",
-											"type": "Date",
-											"physicalType": "date"
-										}
-									},
-									{
-										"source": {
-											"name": "JobTitle",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "JobTitle",
+											"name": "Address",
 											"type": "String",
 											"physicalType": "varchar"
 										}
 									},
 									{
 										"source": {
-											"name": "Department",
+											"name": "City",
 											"type": "String",
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "Department",
+											"name": "City",
 											"type": "String",
 											"physicalType": "varchar"
 										}
 									},
 									{
 										"source": {
-											"name": "Salary",
+											"name": "State",
 											"type": "String",
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "Salary",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 2,
-											"precision": 10
+											"name": "State",
+											"type": "String",
+											"physicalType": "varchar"
 										}
 									},
 									{
 										"source": {
-											"name": "ManagerID",
+											"name": "Zip",
 											"type": "String",
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "ManagerID",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "Status",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Status",
+											"name": "Zip",
 											"type": "String",
 											"physicalType": "varchar"
 										}
@@ -1091,25 +1065,16 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "DS_EmployeeCsv",
+								"referenceName": "DS_MidwestCustomers",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "DS_EmployeesUpdate",
+								"referenceName": "DS_CustomerInDb",
 								"type": "DatasetReference",
-								"parameters": {
-									"_SrcTableSchema": {
-										"value": "@pipeline().parameters._SrcTableSchema",
-										"type": "Expression"
-									},
-									"_SrcTableName": {
-										"value": "@pipeline().parameters._SrcTableName",
-										"type": "Expression"
-									}
-								}
+								"parameters": {}
 							}
 						]
 					}
@@ -1141,8 +1106,8 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_EmployeeCsv')]",
-				"[concat(variables('factoryId'), '/datasets/DS_EmployeesUpdate')]"
+				"[concat(variables('factoryId'), '/datasets/DS_MidwestCustomers')]",
+				"[concat(variables('factoryId'), '/datasets/DS_CustomerInDb')]"
 			]
 		},
 		{
@@ -1852,6 +1817,81 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_CustomerInDb')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"Domain": "sql-jrcs3-ciq-playground.database.windows.net",
+						"Database": "db-jrcs3-ciq-playground"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "CustomerID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "FirstName",
+						"type": "varchar"
+					},
+					{
+						"name": "LastName",
+						"type": "varchar"
+					},
+					{
+						"name": "Email",
+						"type": "varchar"
+					},
+					{
+						"name": "Phone",
+						"type": "varchar"
+					},
+					{
+						"name": "Address",
+						"type": "varchar"
+					},
+					{
+						"name": "City",
+						"type": "varchar"
+					},
+					{
+						"name": "State",
+						"type": "varchar"
+					},
+					{
+						"name": "Zip",
+						"type": "varchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "LastModifiedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Customer"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_DemoUpperMidwest')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2486,6 +2526,67 @@
 						}
 					}
 				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BlobStorageLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_MidwestCustomers')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BlobStorageLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "mock_customer_contacts_upper_midwest_50.csv",
+						"container": "customers"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "FirstName",
+						"type": "String"
+					},
+					{
+						"name": "LastName",
+						"type": "String"
+					},
+					{
+						"name": "Email",
+						"type": "String"
+					},
+					{
+						"name": "Phone",
+						"type": "String"
+					},
+					{
+						"name": "Address",
+						"type": "String"
+					},
+					{
+						"name": "City",
+						"type": "String"
+					},
+					{
+						"name": "State",
+						"type": "String"
+					},
+					{
+						"name": "Zip",
+						"type": "String"
+					}
+				]
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/BlobStorageLinkedService')]"
