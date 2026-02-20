@@ -9,6 +9,16 @@
 				"Database": "db-jrcs3-ciq-playground"
 			}
 		},
+		"parameters": {
+			"_SrcTableSchema": {
+				"type": "string",
+				"defaultValue": "dbo"
+			},
+			"_SrcTableName": {
+				"type": "string",
+				"defaultValue": "Customer"
+			}
+		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [
@@ -63,8 +73,14 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "dbo",
-			"table": "Customer"
+			"schema": {
+				"value": "@dataset()._SrcTableSchema",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset()._SrcTableName",
+				"type": "Expression"
+			}
 		}
 	}
 }
