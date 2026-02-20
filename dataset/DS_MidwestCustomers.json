@@ -5,6 +5,16 @@
 			"referenceName": "BlobStorageLinkedService",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"_ScrBlobContainer": {
+				"type": "string",
+				"defaultValue": "customers"
+			},
+			"_ScrBlobFilename": {
+				"type": "string",
+				"defaultValue": "mock_customer_contacts_upper_midwest_50.csv"
+			}
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
