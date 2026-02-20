@@ -1,6 +1,70 @@
 {
 	"name": "PL_Test_Copy",
 	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_EmployeeCsv",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_EmployeesUpdate",
+						"type": "DatasetReference",
+						"parameters": {
+							"_SrcTableSchema": {
+								"value": "@pipeline().parameters._SrcTableSchema",
+								"type": "Expression"
+							},
+							"_SrcTableName": {
+								"value": "@pipeline().parameters._SrcTableName",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
 		"parameters": {
 			"_ScrBlobContainer": {
 				"type": "string",
@@ -20,7 +84,7 @@
 			}
 		},
 		"folder": {
-			"name": "UpdateEmployee"
+			"name": "Tests"
 		},
 		"annotations": []
 	}
