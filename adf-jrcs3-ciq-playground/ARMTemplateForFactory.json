@@ -1067,14 +1067,32 @@
 							{
 								"referenceName": "DS_MidwestCustomers",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"_ScrBlobContainer": {
+										"value": "@pipeline().parameters._ScrBlobContainer",
+										"type": "Expression"
+									},
+									"_ScrBlobFilename": {
+										"value": "@pipeline().parameters._ScrBlobFilename",
+										"type": "Expression"
+									}
+								}
 							}
 						],
 						"outputs": [
 							{
 								"referenceName": "DS_CustomerInDb",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"_SrcTableSchema": {
+										"value": "@pipeline().parameters._SrcTableSchema",
+										"type": "Expression"
+									},
+									"_SrcTableName": {
+										"value": "@pipeline().parameters._SrcTableName",
+										"type": "Expression"
+									}
+								}
 							}
 						]
 					}
@@ -1829,6 +1847,16 @@
 						"Database": "db-jrcs3-ciq-playground"
 					}
 				},
+				"parameters": {
+					"_SrcTableSchema": {
+						"type": "string",
+						"defaultValue": "dbo"
+					},
+					"_SrcTableName": {
+						"type": "string",
+						"defaultValue": "Customer"
+					}
+				},
 				"annotations": [],
 				"type": "AzureSqlTable",
 				"schema": [
@@ -1883,8 +1911,14 @@
 					}
 				],
 				"typeProperties": {
-					"schema": "dbo",
-					"table": "Customer"
+					"schema": {
+						"value": "@dataset()._SrcTableSchema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset()._SrcTableName",
+						"type": "Expression"
+					}
 				}
 			},
 			"dependsOn": [
@@ -2539,6 +2573,16 @@
 				"linkedServiceName": {
 					"referenceName": "BlobStorageLinkedService",
 					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"_ScrBlobContainer": {
+						"type": "string",
+						"defaultValue": "customers"
+					},
+					"_ScrBlobFilename": {
+						"type": "string",
+						"defaultValue": "mock_customer_contacts_upper_midwest_50.csv"
+					}
 				},
 				"annotations": [],
 				"type": "DelimitedText",
