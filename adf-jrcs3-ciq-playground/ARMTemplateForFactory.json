@@ -37,6 +37,111 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/PL_Copy_with_sp')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"sqlWriterStoredProcedureName": "[[dbo].[InsertCustomer]",
+								"sqlWriterTableType": "Customer",
+								"storedProcedureTableTypeParameterName": "Customer",
+								"storedProcedureParameters": {
+									"Address": {
+										"type": "String"
+									},
+									"City": {
+										"type": "String"
+									},
+									"Email": {
+										"type": "String"
+									},
+									"FirstName": {
+										"type": "String"
+									},
+									"LastName": {
+										"type": "String"
+									},
+									"Phone": {
+										"type": "String"
+									},
+									"State": {
+										"type": "String"
+									},
+									"Zip": {
+										"type": "String"
+									}
+								},
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_CsvUpperMidwestCustomers",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_CustomerInDb",
+								"type": "DatasetReference",
+								"parameters": {
+									"_SrcTableSchema": "dbo",
+									"_SrcTableName": "Customer"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Tests"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_CsvUpperMidwestCustomers')]",
+				"[concat(variables('factoryId'), '/datasets/DS_CustomerInDb')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_CustAndTrans')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
