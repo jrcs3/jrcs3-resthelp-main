@@ -1,0 +1,28 @@
+{
+	"name": "fileWatcher",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "MoveFiles",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"SourceStore_Location": "copy-from",
+					"DestinationStore_Location": "copy-to"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/copy-from/blobs/my",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/0683efbd-ab9e-4f77-8d19-61802ae3ac8f/resourceGroups/rg-jrcs3-ciq-playground/providers/Microsoft.Storage/storageAccounts/blobjrcs3ciqplayground",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}
