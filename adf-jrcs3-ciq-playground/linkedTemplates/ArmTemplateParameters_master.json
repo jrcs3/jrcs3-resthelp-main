@@ -23,6 +23,15 @@
 		"AzureSqlDatabase1_properties_typeProperties_userName": {
 			"value": "dataminister-admin"
 		},
+		"fileWatcher_properties_MoveFiles_parameters_SourceStore_Location": {
+			"value": "copy-from"
+		},
+		"fileWatcher_properties_MoveFiles_parameters_DestinationStore_Location": {
+			"value": "copy-to"
+		},
+		"fileWatcher_properties_typeProperties_scope": {
+			"value": "/subscriptions/0683efbd-ab9e-4f77-8d19-61802ae3ac8f/resourceGroups/rg-jrcs3-ciq-playground/providers/Microsoft.Storage/storageAccounts/blobjrcs3ciqplayground"
+		},
 		"containerUri": {
 			"value": ""
 		},

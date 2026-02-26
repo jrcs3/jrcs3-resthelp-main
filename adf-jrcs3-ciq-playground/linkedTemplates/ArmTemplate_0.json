@@ -137,6 +137,47 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/BinaryDataDestination1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "It describes the destination store.",
+				"linkedServiceName": {
+					"referenceName": "BlobStorageLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"Container": {
+						"type": "String"
+					},
+					"Directory": {
+						"type": "String"
+					},
+					"filename": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": {
+							"value": "@{dataset().Directory}",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@{dataset().Container}",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BlobStorageLinkedService')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/BinaryDataSource_File')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -182,6 +223,51 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/BinaryDataSource_File1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "It describes the file in the data source store.",
+				"linkedServiceName": {
+					"referenceName": "BlobStorageLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"Container": {
+						"type": "String"
+					},
+					"Directory": {
+						"type": "String"
+					},
+					"filename": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().filename",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@{dataset().Directory}",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@{dataset().Container}",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BlobStorageLinkedService')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/BinaryDataSource_Folder')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -217,6 +303,44 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BinaryDataSource_Folder1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "It describes the folder in the data source store.",
+				"linkedServiceName": {
+					"referenceName": "BlobStorageLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"Container": {
+						"type": "String"
+					},
+					"Directory": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": {
+							"value": "@{dataset().Directory}",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@{dataset().Container}",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BlobStorageLinkedService')]"
 			]
 		},
 		{
@@ -990,173 +1114,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_Json')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "BlobStorageLinkedService",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "mock_customer_contacts_florida_50.json",
-						"container": "jason"
-					}
-				},
-				"schema": {
-					"type": "object",
-					"properties": {
-						"FirstName": {
-							"type": "string"
-						},
-						"LastName": {
-							"type": "string"
-						},
-						"Email": {
-							"type": "string"
-						},
-						"Phone": {
-							"type": "string"
-						},
-						"Address": {
-							"type": "string"
-						},
-						"City": {
-							"type": "string"
-						},
-						"State": {
-							"type": "string"
-						},
-						"Zip": {
-							"type": "string"
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BlobStorageLinkedService')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_JsonTransform')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "BlobStorageLinkedService",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "mock_customer_contacts_new_england_50.json",
-						"container": "tranform"
-					}
-				},
-				"schema": {
-					"type": "object",
-					"properties": {
-						"first_name": {
-							"type": "string"
-						},
-						"last_name": {
-							"type": "string"
-						},
-						"address": {
-							"type": "string"
-						},
-						"city": {
-							"type": "string"
-						},
-						"state": {
-							"type": "string"
-						},
-						"zip": {
-							"type": "string"
-						},
-						"email": {
-							"type": "string"
-						},
-						"phone": {
-							"type": "string"
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BlobStorageLinkedService')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_JsonWnba')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "BlobStorageLinkedService",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "mock_wnba_players_50.json",
-						"container": "tranform"
-					}
-				},
-				"schema": {
-					"type": "object",
-					"properties": {
-						"first_name": {
-							"type": "string"
-						},
-						"last_name": {
-							"type": "string"
-						},
-						"team": {
-							"type": "string"
-						},
-						"position": {
-							"type": "string"
-						},
-						"address": {
-							"type": "object",
-							"properties": {
-								"street": {
-									"type": "string"
-								},
-								"city": {
-									"type": "string"
-								},
-								"state": {
-									"type": "string"
-								},
-								"zip": {
-									"type": "string"
-								}
-							}
-						},
-						"email": {
-							"type": "string"
-						},
-						"phone": {
-							"type": "string"
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BlobStorageLinkedService')]"
 			]
 		}
 	]

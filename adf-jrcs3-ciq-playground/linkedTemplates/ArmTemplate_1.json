@@ -13,6 +13,167 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_Json')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BlobStorageLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "mock_customer_contacts_florida_50.json",
+						"container": "jason"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"FirstName": {
+							"type": "string"
+						},
+						"LastName": {
+							"type": "string"
+						},
+						"Email": {
+							"type": "string"
+						},
+						"Phone": {
+							"type": "string"
+						},
+						"Address": {
+							"type": "string"
+						},
+						"City": {
+							"type": "string"
+						},
+						"State": {
+							"type": "string"
+						},
+						"Zip": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_JsonTransform')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BlobStorageLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "mock_customer_contacts_new_england_50.json",
+						"container": "tranform"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"first_name": {
+							"type": "string"
+						},
+						"last_name": {
+							"type": "string"
+						},
+						"address": {
+							"type": "string"
+						},
+						"city": {
+							"type": "string"
+						},
+						"state": {
+							"type": "string"
+						},
+						"zip": {
+							"type": "string"
+						},
+						"email": {
+							"type": "string"
+						},
+						"phone": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_JsonWnba')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BlobStorageLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "mock_wnba_players_50.json",
+						"container": "tranform"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"first_name": {
+							"type": "string"
+						},
+						"last_name": {
+							"type": "string"
+						},
+						"team": {
+							"type": "string"
+						},
+						"position": {
+							"type": "string"
+						},
+						"address": {
+							"type": "object",
+							"properties": {
+								"street": {
+									"type": "string"
+								},
+								"city": {
+									"type": "string"
+								},
+								"state": {
+									"type": "string"
+								},
+								"zip": {
+									"type": "string"
+								}
+							}
+						},
+						"email": {
+							"type": "string"
+						},
+						"phone": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_MidwestCustomers')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -229,6 +390,85 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_Out_Test_Please')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BlobStorageLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "Please.csv",
+						"container": "out"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "EmployeeID",
+						"type": "String"
+					},
+					{
+						"name": "FirstName",
+						"type": "String"
+					},
+					{
+						"name": "LastName",
+						"type": "String"
+					},
+					{
+						"name": "Email",
+						"type": "String"
+					},
+					{
+						"name": "PhoneNumber",
+						"type": "String"
+					},
+					{
+						"name": "HireDate",
+						"type": "String"
+					},
+					{
+						"name": "JobTitle",
+						"type": "String"
+					},
+					{
+						"name": "Department",
+						"type": "String"
+					},
+					{
+						"name": "Salary",
+						"type": "String"
+					},
+					{
+						"name": "ManagerID",
+						"type": "String"
+					},
+					{
+						"name": "Status",
+						"type": "String"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "String"
+					},
+					{
+						"name": "LastModifiedDate",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_Sql')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -386,6 +626,245 @@
 					}
 				},
 				"schema": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MoveFiles')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Move files from one folder to another folder",
+				"activities": [
+					{
+						"name": "GetFileList",
+						"description": "Get the list of file",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "BinaryDataSource_Folder1",
+								"type": "DatasetReference",
+								"parameters": {
+									"Container": {
+										"value": "@pipeline().parameters.SourceStore_Location",
+										"type": "Expression"
+									},
+									"Directory": {
+										"value": "@pipeline().parameters.SourceStore_Directory",
+										"type": "Expression"
+									}
+								}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true
+							},
+							"formatSettings": {
+								"type": "BinaryReadSettings"
+							}
+						}
+					},
+					{
+						"name": "ForEachFile",
+						"description": "Iterate each file, and move them one by one.",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "FilterFiles",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('FilterFiles').output.value",
+								"type": "Expression"
+							},
+							"batchCount": 20,
+							"activities": [
+								{
+									"name": "CopyAFile",
+									"description": "Copy a file from the source store to the destination store.",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "BinarySource",
+											"storeSettings": {
+												"type": "AzureBlobStorageReadSettings",
+												"recursive": true
+											},
+											"formatSettings": {
+												"type": "BinaryReadSettings"
+											},
+											"recursive": false
+										},
+										"sink": {
+											"type": "BinarySink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											}
+										},
+										"enableStaging": false,
+										"dataIntegrationUnits": 0
+									},
+									"inputs": [
+										{
+											"referenceName": "BinaryDataSource_File1",
+											"type": "DatasetReference",
+											"parameters": {
+												"Container": {
+													"value": "@pipeline().parameters.SourceStore_Location",
+													"type": "Expression"
+												},
+												"Directory": {
+													"value": "@pipeline().parameters.SourceStore_Directory",
+													"type": "Expression"
+												},
+												"filename": {
+													"value": "@item().name",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "BinaryDataDestination1",
+											"type": "DatasetReference",
+											"parameters": {
+												"Container": {
+													"value": "@pipeline().parameters.DestinationStore_Location",
+													"type": "Expression"
+												},
+												"Directory": {
+													"value": "@pipeline().parameters.DestinationStore_Directory",
+													"type": "Expression"
+												},
+												"filename": {
+													"value": "@item().name",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								},
+								{
+									"name": "DeleteAFile",
+									"description": "Delete a file from the source store",
+									"type": "Delete",
+									"dependsOn": [
+										{
+											"activity": "CopyAFile",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataset": {
+											"referenceName": "BinaryDataSource_File1",
+											"type": "DatasetReference",
+											"parameters": {
+												"Container": {
+													"value": "@pipeline().parameters.SourceStore_Location",
+													"type": "Expression"
+												},
+												"Directory": {
+													"value": "@pipeline().parameters.SourceStore_Directory",
+													"type": "Expression"
+												},
+												"filename": {
+													"value": "@item().name",
+													"type": "Expression"
+												}
+											}
+										},
+										"enableLogging": false,
+										"storeSettings": {
+											"type": "AzureBlobStorageReadSettings",
+											"recursive": true
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "FilterFiles",
+						"description": "Only files will be selected, the source-folders will not be selected.",
+						"type": "Filter",
+						"dependsOn": [
+							{
+								"activity": "GetFileList",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('GetFileList').output.childItems",
+								"type": "Expression"
+							},
+							"condition": {
+								"value": "@equals(item().type, 'File')",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"SourceStore_Location": {
+						"type": "String",
+						"defaultValue": "copy-from"
+					},
+					"SourceStore_Directory": {
+						"type": "String"
+					},
+					"DestinationStore_Location": {
+						"type": "String",
+						"defaultValue": "copy-to"
+					},
+					"DestinationStore_Directory": {
+						"type": "String"
+					}
+				},
+				"annotations": []
 			},
 			"dependsOn": []
 		},
@@ -1027,6 +1506,7 @@
 				"lastPublishTime": "2026-01-09T23:33:25Z"
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_Json')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Sql')]"
 			]
 		},
@@ -1551,641 +2031,6 @@
 					"elapsedTimeMetric": {}
 				},
 				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_Staging_Employee",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_Archive_Employee",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "Delete1",
-						"type": "Delete",
-						"dependsOn": [
-							{
-								"activity": "Copy data1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "DS_Staging_Employee",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"enableLogging": true,
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "Staging"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_Staging_Employee')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DF_CustAndTrans')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_CsvUpperMidwestCustomers",
-								"type": "DatasetReference"
-							},
-							"name": "inCustomers"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_CsvUpperMidwestCustomersTrans",
-								"type": "DatasetReference"
-							},
-							"name": "inTransactions"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_OutTrans",
-								"type": "DatasetReference"
-							},
-							"name": "outTransactionsWithCustomers"
-						}
-					],
-					"transformations": [
-						{
-							"name": "joinCustToTrans"
-						},
-						{
-							"name": "selTransColumns"
-						},
-						{
-							"name": "dFullName"
-						},
-						{
-							"name": "sortByDate"
-						},
-						{
-							"name": "filterWi"
-						},
-						{
-							"name": "filterDate"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          FirstName as string,",
-						"          LastName as string,",
-						"          Email as string,",
-						"          Phone as string,",
-						"          Address as string,",
-						"          City as string,",
-						"          State as string,",
-						"          Zip as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> inCustomers",
-						"source(output(",
-						"          TransactionID as string,",
-						"          CustomerEmail as string,",
-						"          TransactionDate as string,",
-						"          PolicyType as string,",
-						"          PremiumAmount as string,",
-						"          TransactionType as string,",
-						"          Status as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> inTransactions",
-						"filterWi, filterDate join(Email == CustomerEmail,",
-						"     joinType:'inner',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> joinCustToTrans",
-						"dFullName select(mapColumn(",
-						"          TransactionID,",
-						"          Date = TransactionDate,",
-						"          Name = FullName,",
-						"          Email,",
-						"          PolicyType,",
-						"          PremiumAmount,",
-						"          TransactionType,",
-						"          Status",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> selTransColumns",
-						"joinCustToTrans derive(FullName = FirstName + \" \" + LastName) ~> dFullName",
-						"selTransColumns sort(asc(Date, true)) ~> sortByDate",
-						"inCustomers filter(State == \"WI\") ~> filterWi",
-						"inTransactions filter(toDate(TransactionDate) >= toDate(\"2025-12-31\")) ~> filterDate",
-						"sortByDate sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          FirstName as string,",
-						"          LastName as string,",
-						"          Email as string,",
-						"          Phone as string,",
-						"          Address as string,",
-						"          City as string,",
-						"          State as string,",
-						"          Zip as string",
-						"     ),",
-						"     partitionFileNames:[(\"Trans_\" + toString(currentDate()) + \".csv\")],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> outTransactionsWithCustomers"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_OutTrans')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DF_FromWi')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_CsvUpperMidwestCustomers",
-								"type": "DatasetReference"
-							},
-							"name": "source1"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_OutWi",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "filterWi"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          FirstName as string,",
-						"          LastName as string,",
-						"          Email as string,",
-						"          Phone as string,",
-						"          Address as string,",
-						"          City as string,",
-						"          State as string,",
-						"          Zip as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> source1",
-						"source1 filter(State == \"WI\") ~> filterWi",
-						"filterWi sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     partitionFileNames:[(\"WI_\" + toString(currentDate()) + \".csv\")],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_OutWi')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DF_Splitsville')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_CsvUpperMidwestCustomers",
-								"type": "DatasetReference"
-							},
-							"name": "MidwestCustomers"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_OutOther",
-								"type": "DatasetReference"
-							},
-							"name": "SWi"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_OutOther",
-								"type": "DatasetReference"
-							},
-							"name": "SMn"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_OutOther",
-								"type": "DatasetReference"
-							},
-							"name": "SMi"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_OutOther",
-								"type": "DatasetReference"
-							},
-							"name": "SIl"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_OutOther",
-								"type": "DatasetReference"
-							},
-							"name": "SIn"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_OutOther",
-								"type": "DatasetReference"
-							},
-							"name": "SIa"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_OutOther",
-								"type": "DatasetReference"
-							},
-							"name": "SNd"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_OutOther",
-								"type": "DatasetReference"
-							},
-							"name": "SSd"
-						}
-					],
-					"transformations": [
-						{
-							"name": "spStates"
-						},
-						{
-							"name": "AgOther"
-						},
-						{
-							"name": "AsOther"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          FirstName as string,",
-						"          LastName as string,",
-						"          Email as string,",
-						"          Phone as string,",
-						"          Address as string,",
-						"          City as string,",
-						"          State as string,",
-						"          Zip as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> MidwestCustomers",
-						"MidwestCustomers split(State == \"WI\",",
-						"     State == \"MN\",",
-						"     State == \"MI\",",
-						"     State == \"IL\",",
-						"     State == \"IN\",",
-						"     State == \"IA\",",
-						"     State == \"ND\",",
-						"     State == \"SD\",",
-						"     disjoint: false) ~> spStates@(CWi, CMn, CMi, CIl, CIn, CIa, CNd, CSd, COther)",
-						"spStates@COther aggregate(rowCount = count(FirstName)) ~> AgOther",
-						"AgOther assert(expectTrue(rowCount == 0, false, 'HasNoRecordsCheck', null, 'The data stream must be empty')) ~> AsOther",
-						"spStates@CWi sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          TransactionID as string,",
-						"          Date as string,",
-						"          Name as string,",
-						"          Email as string,",
-						"          PolicyType as string,",
-						"          PremiumAmount as string,",
-						"          TransactionType as string,",
-						"          Status as string",
-						"     ),",
-						"     partitionFileNames:['SplitWi.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> SWi",
-						"spStates@CMn sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          TransactionID as string,",
-						"          Date as string,",
-						"          Name as string,",
-						"          Email as string,",
-						"          PolicyType as string,",
-						"          PremiumAmount as string,",
-						"          TransactionType as string,",
-						"          Status as string",
-						"     ),",
-						"     partitionFileNames:['SplitMn.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> SMn",
-						"spStates@CMi sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          TransactionID as string,",
-						"          Date as string,",
-						"          Name as string,",
-						"          Email as string,",
-						"          PolicyType as string,",
-						"          PremiumAmount as string,",
-						"          TransactionType as string,",
-						"          Status as string",
-						"     ),",
-						"     partitionFileNames:['SplitMI.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> SMi",
-						"spStates@CIl sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          TransactionID as string,",
-						"          Date as string,",
-						"          Name as string,",
-						"          Email as string,",
-						"          PolicyType as string,",
-						"          PremiumAmount as string,",
-						"          TransactionType as string,",
-						"          Status as string",
-						"     ),",
-						"     partitionFileNames:['SplitIl.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> SIl",
-						"spStates@CIn sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          TransactionID as string,",
-						"          Date as string,",
-						"          Name as string,",
-						"          Email as string,",
-						"          PolicyType as string,",
-						"          PremiumAmount as string,",
-						"          TransactionType as string,",
-						"          Status as string",
-						"     ),",
-						"     partitionFileNames:['SplitIn.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> SIn",
-						"spStates@CIa sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          TransactionID as string,",
-						"          Date as string,",
-						"          Name as string,",
-						"          Email as string,",
-						"          PolicyType as string,",
-						"          PremiumAmount as string,",
-						"          TransactionType as string,",
-						"          Status as string",
-						"     ),",
-						"     partitionFileNames:['SplitIa.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> SIa",
-						"spStates@CNd sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          TransactionID as string,",
-						"          Date as string,",
-						"          Name as string,",
-						"          Email as string,",
-						"          PolicyType as string,",
-						"          PremiumAmount as string,",
-						"          TransactionType as string,",
-						"          Status as string",
-						"     ),",
-						"     partitionFileNames:['SplitNd.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> SNd",
-						"spStates@CSd sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          TransactionID as string,",
-						"          Date as string,",
-						"          Name as string,",
-						"          Email as string,",
-						"          PolicyType as string,",
-						"          PremiumAmount as string,",
-						"          TransactionType as string,",
-						"          Status as string",
-						"     ),",
-						"     partitionFileNames:['SplitSd.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> SSd"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_OutOther')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DF_UpdateEmployees')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "UpdateEmployee"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_EmployeeChanges",
-								"type": "DatasetReference"
-							},
-							"name": "source1"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_EmployeesUpdate",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "alterRow1"
-						},
-						{
-							"name": "derivedColumn1"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          Email as string,",
-						"          Operation_Type as string,",
-						"          FirstName as string,",
-						"          LastName as string,",
-						"          PhoneNumber as string,",
-						"          HireDate as string,",
-						"          JobTitle as string,",
-						"          Department as string,",
-						"          Salary as string,",
-						"          ManagerID as string,",
-						"          Status as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> source1",
-						"source1 alterRow(updateIf(Operation_Type==\"UPDATE\")) ~> alterRow1",
-						"alterRow1 derive(LastModifiedDate = currentTimestamp(),",
-						"          SalaryDecimal = toDecimal(Salary)) ~> derivedColumn1",
-						"derivedColumn1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          EmployeeID as integer,",
-						"          FirstName as string,",
-						"          LastName as string,",
-						"          Email as string,",
-						"          PhoneNumber as string,",
-						"          HireDate as date,",
-						"          JobTitle as string,",
-						"          Department as string,",
-						"          Salary as decimal(10,2),",
-						"          ManagerID as integer,",
-						"          Status as string,",
-						"          CreatedDate as timestamp,",
-						"          LastModifiedDate as timestamp",
-						"     ),",
-						"     deletable:false,",
-						"     insertable:false,",
-						"     updateable:true,",
-						"     upsertable:false,",
-						"     keys:['Email'],",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
-						"     mapColumn(",
-						"          FirstName,",
-						"          LastName,",
-						"          Email,",
-						"          PhoneNumber,",
-						"          JobTitle,",
-						"          Department,",
-						"          Status,",
-						"          LastModifiedDate,",
-						"          Salary = SalaryDecimal",
-						"     )) ~> sink1"
-					]
-				}
 			},
 			"dependsOn": []
 		}
