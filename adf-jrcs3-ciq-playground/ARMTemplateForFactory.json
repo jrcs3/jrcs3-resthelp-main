@@ -3588,7 +3588,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -3603,7 +3603,8 @@
 				],
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
-					"blobPathBeginsWith": "/copy-from/blobs/my",
+					"blobPathBeginsWith": "/copy-from/blobs/",
+					"blobPathEndsWith": ".txt",
 					"ignoreEmptyBlobs": true,
 					"scope": "[parameters('fileWatcher_properties_typeProperties_scope')]",
 					"events": [
