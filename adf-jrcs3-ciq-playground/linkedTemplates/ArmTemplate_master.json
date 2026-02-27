@@ -31,11 +31,11 @@
 			"type": "string",
 			"defaultValue": "dataminister-admin"
 		},
-		"fileWatcher_properties_MoveFiles_parameters_SourceStore_Location": {
+		"fileWatcher_properties_PL_MoveFiles_parameters_SourceStore_Location": {
 			"type": "string",
 			"defaultValue": "copy-from"
 		},
-		"fileWatcher_properties_MoveFiles_parameters_DestinationStore_Location": {
+		"fileWatcher_properties_PL_MoveFiles_parameters_DestinationStore_Location": {
 			"type": "string",
 			"defaultValue": "copy-to"
 		},
@@ -126,11 +126,11 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"fileWatcher_properties_MoveFiles_parameters_SourceStore_Location": {
-						"value": "[parameters('fileWatcher_properties_MoveFiles_parameters_SourceStore_Location')]"
+					"fileWatcher_properties_PL_MoveFiles_parameters_SourceStore_Location": {
+						"value": "[parameters('fileWatcher_properties_PL_MoveFiles_parameters_SourceStore_Location')]"
 					},
-					"fileWatcher_properties_MoveFiles_parameters_DestinationStore_Location": {
-						"value": "[parameters('fileWatcher_properties_MoveFiles_parameters_DestinationStore_Location')]"
+					"fileWatcher_properties_PL_MoveFiles_parameters_DestinationStore_Location": {
+						"value": "[parameters('fileWatcher_properties_PL_MoveFiles_parameters_DestinationStore_Location')]"
 					},
 					"fileWatcher_properties_typeProperties_scope": {
 						"value": "[parameters('fileWatcher_properties_typeProperties_scope')]"

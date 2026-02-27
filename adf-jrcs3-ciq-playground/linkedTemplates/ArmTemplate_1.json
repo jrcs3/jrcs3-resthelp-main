@@ -630,7 +630,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/MoveFiles')]",
+			"name": "[concat(parameters('factoryName'), '/PL_MoveFiles')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {

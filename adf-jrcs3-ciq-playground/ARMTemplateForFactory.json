@@ -31,11 +31,11 @@
 			"type": "string",
 			"defaultValue": "dataminister-admin"
 		},
-		"fileWatcher_properties_MoveFiles_parameters_SourceStore_Location": {
+		"fileWatcher_properties_PL_MoveFiles_parameters_SourceStore_Location": {
 			"type": "string",
 			"defaultValue": "copy-from"
 		},
-		"fileWatcher_properties_MoveFiles_parameters_DestinationStore_Location": {
+		"fileWatcher_properties_PL_MoveFiles_parameters_DestinationStore_Location": {
 			"type": "string",
 			"defaultValue": "copy-to"
 		},
@@ -49,7 +49,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/MoveFiles')]",
+			"name": "[concat(parameters('factoryName'), '/PL_MoveFiles')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -4197,16 +4197,16 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
-							"referenceName": "MoveFiles",
+							"referenceName": "PL_MoveFiles",
 							"type": "PipelineReference"
 						},
 						"parameters": {
-							"SourceStore_Location": "[parameters('fileWatcher_properties_MoveFiles_parameters_SourceStore_Location')]",
-							"DestinationStore_Location": "[parameters('fileWatcher_properties_MoveFiles_parameters_DestinationStore_Location')]"
+							"SourceStore_Location": "[parameters('fileWatcher_properties_PL_MoveFiles_parameters_SourceStore_Location')]",
+							"DestinationStore_Location": "[parameters('fileWatcher_properties_PL_MoveFiles_parameters_DestinationStore_Location')]"
 						}
 					}
 				],
@@ -4221,7 +4221,320 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/MoveFiles')]"
+				"[concat(variables('factoryId'), '/pipelines/PL_MoveFiles')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_MoveFilesWPL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "FilterFiles",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('FilterFiles').output.value",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"batchCount": 20,
+							"activities": [
+								{
+									"name": "Execute Pipeline1",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"policy": {
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "PL_MoveFilesInnerPL",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"SourceStore_Location": {
+												"value": "@pipeline().parameters.SourceStore_Location",
+												"type": "Expression"
+											},
+											"SourceStore_Directory": {
+												"value": "@pipeline().parameters.SourceStore_Directory",
+												"type": "Expression"
+											},
+											"DestinationStore_Location": {
+												"value": "@pipeline().parameters.DestinationStore_Location",
+												"type": "Expression"
+											},
+											"DestinationStore_Directory": {
+												"value": "@pipeline().parameters.SourceStore_Directory",
+												"type": "Expression"
+											},
+											"FileName": {
+												"value": "@item()",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "GetFileList",
+						"description": "Get the list of file",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "BinaryDataSource_Folder1",
+								"type": "DatasetReference",
+								"parameters": {
+									"Container": {
+										"value": "@pipeline().parameters.SourceStore_Location",
+										"type": "Expression"
+									},
+									"Directory": {
+										"value": "@pipeline().parameters.SourceStore_Directory",
+										"type": "Expression"
+									}
+								}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true
+							},
+							"formatSettings": {
+								"type": "BinaryReadSettings"
+							}
+						}
+					},
+					{
+						"name": "FilterFiles",
+						"description": "Only files will be selected, the source-folders will not be selected.",
+						"type": "Filter",
+						"dependsOn": [
+							{
+								"activity": "GetFileList",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('GetFileList').output.childItems",
+								"type": "Expression"
+							},
+							"condition": {
+								"value": "@equals(item().type, 'File')",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"SourceStore_Location": {
+						"type": "string",
+						"defaultValue": "copy-from"
+					},
+					"SourceStore_Directory": {
+						"type": "string"
+					},
+					"DestinationStore_Location": {
+						"type": "string",
+						"defaultValue": "copy-to"
+					},
+					"DestinationStore_Directory": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/BinaryDataSource_Folder1')]",
+				"[concat(variables('factoryId'), '/pipelines/PL_MoveFilesInnerPL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_MoveFilesInnerPL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CopyAFile",
+						"description": "Copy a file from the source store to the destination store.",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								},
+								"recursive": false
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"dataIntegrationUnits": 0
+						},
+						"inputs": [
+							{
+								"referenceName": "BinaryDataSource_File1",
+								"type": "DatasetReference",
+								"parameters": {
+									"Container": {
+										"value": "@pipeline().parameters.DestinationStore_Location",
+										"type": "Expression"
+									},
+									"Directory": {
+										"value": "@pipeline().parameters.SourceStore_Directory",
+										"type": "Expression"
+									},
+									"filename": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "BinaryDataDestination1",
+								"type": "DatasetReference",
+								"parameters": {
+									"Container": {
+										"value": "@pipeline().parameters.DestinationStore_Location",
+										"type": "Expression"
+									},
+									"Directory": {
+										"value": "@pipeline().parameters.DestinationStore_Directory",
+										"type": "Expression"
+									},
+									"filename": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "DeleteAFile",
+						"description": "Delete a file from the source store",
+						"type": "Delete",
+						"dependsOn": [
+							{
+								"activity": "CopyAFile",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "BinaryDataSource_File1",
+								"type": "DatasetReference",
+								"parameters": {
+									"Container": {
+										"value": "@pipeline().parameters.SourceStore_Location",
+										"type": "Expression"
+									},
+									"Directory": {
+										"value": "@pipeline().parameters.SourceStore_Directory",
+										"type": "Expression"
+									},
+									"filename": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									}
+								}
+							},
+							"enableLogging": false,
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"SourceStore_Location": {
+						"type": "string"
+					},
+					"SourceStore_Directory": {
+						"type": "string"
+					},
+					"DestinationStore_Location": {
+						"type": "string"
+					},
+					"DestinationStore_Directory": {
+						"type": "string"
+					},
+					"FileName": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/BinaryDataSource_File1')]",
+				"[concat(variables('factoryId'), '/datasets/BinaryDataDestination1')]"
 			]
 		}
 	]

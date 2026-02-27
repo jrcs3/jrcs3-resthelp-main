@@ -23,10 +23,10 @@
 		"AzureSqlDatabase1_properties_typeProperties_userName": {
 			"value": "dataminister-admin"
 		},
-		"fileWatcher_properties_MoveFiles_parameters_SourceStore_Location": {
+		"fileWatcher_properties_PL_MoveFiles_parameters_SourceStore_Location": {
 			"value": "copy-from"
 		},
-		"fileWatcher_properties_MoveFiles_parameters_DestinationStore_Location": {
+		"fileWatcher_properties_PL_MoveFiles_parameters_DestinationStore_Location": {
 			"value": "copy-to"
 		},
 		"fileWatcher_properties_typeProperties_scope": {
