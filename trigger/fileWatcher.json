@@ -2,11 +2,11 @@
 	"name": "fileWatcher",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "MoveFiles",
+					"referenceName": "PL_MoveFiles",
 					"type": "PipelineReference"
 				},
 				"parameters": {

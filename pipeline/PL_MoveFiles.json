@@ -1,5 +1,5 @@
 {
-	"name": "MoveFiles",
+	"name": "PL_MoveFiles",
 	"properties": {
 		"description": "Move files from one folder to another folder",
 		"activities": [
