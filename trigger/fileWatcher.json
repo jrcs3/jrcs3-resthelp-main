@@ -21,8 +21,7 @@
 			"ignoreEmptyBlobs": true,
 			"scope": "/subscriptions/0683efbd-ab9e-4f77-8d19-61802ae3ac8f/resourceGroups/rg-jrcs3-ciq-playground/providers/Microsoft.Storage/storageAccounts/blobjrcs3ciqplayground",
 			"events": [
-				"Microsoft.Storage.BlobCreated",
-				"Microsoft.Storage.BlobDeleted"
+				"Microsoft.Storage.BlobCreated"
 			]
 		}
 	}
