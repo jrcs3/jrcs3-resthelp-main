@@ -1,0 +1,29 @@
+{
+	"name": "DS_FixedInBlob",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "BlobStorageLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "SampleData.txt",
+				"folderPath": "sample",
+				"container": "staging"
+			},
+			"columnDelimiter": "|",
+			"escapeChar": "\\",
+			"firstRowAsHeader": false,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "00000001John Smith                    555-123-4567   1250.50",
+				"type": "String"
+			}
+		]
+	}
+}

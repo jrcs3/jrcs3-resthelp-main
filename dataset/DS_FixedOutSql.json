@@ -1,0 +1,20 @@
+{
+	"name": "DS_FixedOutSql",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"Domain": "sql-jrcs3-ciq-playground.database.windows.net",
+				"Database": "db-jrcs3-ciq-playground"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "ContactData"
+		}
+	}
+}
